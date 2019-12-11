@@ -1,0 +1,543 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/drawer_layout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fitsSystemWindows="true"
+    android:orientation="vertical"
+    android:background="#E2E2E2"
+    tools:openDrawer="start">
+
+    <ScrollView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+            <LinearLayout
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:background="#fff"
+                android:layout_height="wrap_content">
+                <LinearLayout
+                    android:layout_marginTop="10dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+                    <TextView
+                        android:id="@+id/reco_text_nickname"
+                        android:paddingLeft="5dp"
+                        android:textStyle="bold"
+                        android:textSize="20dp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="OOO님의 맞춤 콘텐츠"/>
+                    <!--<TextView-->
+                        <!--android:paddingRight="10dp"-->
+                        <!--android:id="@+id/moreView"-->
+                        <!--android:textStyle="bold"-->
+                        <!--android:textSize="20dp"-->
+                        <!--android:gravity="right"-->
+                        <!--android:layout_width="match_parent"-->
+                        <!--android:layout_height="wrap_content"-->
+                        <!--android:text="더보기"/>-->
+                </LinearLayout>
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+                <View
+                    android:layout_width="wrap_content"
+                    android:layout_height="0.3dp"
+                    android:background="#4682B4" />
+                <HorizontalScrollView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content">
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                    </LinearLayout>
+                </HorizontalScrollView>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+                <FrameLayout
+                    android:id="@+id/frameLayout_추천"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                </FrameLayout>
+                    <!--<androidx.recyclerview.widget.RecyclerView-->
+                    <!--android:id="@+id/recomendationRecyclerView"-->
+                    <!--android:layout_width="match_parent"-->
+                    <!--android:layout_height="wrap_content">-->
+                    <!--</androidx.recyclerview.widget.RecyclerView>-->
+            </LinearLayout>
+            <!--================================================================================-->
+            <LinearLayout
+                android:layout_marginTop="10dp"
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:background="#fff"
+                android:layout_height="wrap_content">
+                <LinearLayout
+                    android:layout_marginTop="10dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+                    <TextView
+                        android:paddingLeft="5dp"
+                        android:textStyle="bold"
+                        android:textSize="20dp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="아픈부위찾기"/>
+                    <TextView
+                        android:paddingRight="10dp"
+                        android:id="@+id/moreView"
+                        android:textStyle="bold"
+                        android:textSize="20dp"
+                        android:gravity="right"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="더보기"/>
+                </LinearLayout>
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+                <View
+                    android:layout_width="wrap_content"
+                    android:layout_height="0.3dp"
+                    android:background="#4682B4" />
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+                <HorizontalScrollView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content">
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+                        <TextView
+                            android:id="@+id/pain_neck"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="목 통증 | "/>
+                        <TextView
+                            android:id="@+id/pain_shoulder"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="어깨 통증 | "/>
+                        <TextView
+                            android:id="@+id/pain_back"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="등 통증 | "/>
+                        <TextView
+                            android:id="@+id/pain_waist"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="허리 통증 | "/>
+                        <TextView
+                            android:id="@+id/pain_pelvis"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="골반,고관절 통증 | "/>
+                        <TextView
+                            android:id="@+id/pain_sacrum"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="엉치 통증 | "/>
+                        <TextView
+                            android:id="@+id/pain_knee"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="무릎 통증 | "/>
+                        <TextView
+                            android:id="@+id/pain_ankle"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="발목,발 통증 | "/>
+                        <TextView
+                            android:id="@+id/pain_elbow"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="팔꿈치 통증 | "/>
+                        <TextView
+                            android:id="@+id/pain_wrist"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="손목,손 통증 | "/>
+                        <TextView
+                            android:id="@+id/pain_chest"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="가슴 통증 | "/>
+                        <TextView
+                            android:id="@+id/pain_chin"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="턱관절 통증 | "/>
+                        <TextView
+                            android:id="@+id/pain_headache"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="두통 통증"/>
+                    </LinearLayout>
+                </HorizontalScrollView>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+                <FrameLayout
+                    android:id="@+id/frameLayout_pain"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content">
+                    <!--<androidx.recyclerview.widget.RecyclerView-->
+                        <!--android:id="@+id/mainRecyclerView"-->
+                        <!--android:layout_width="match_parent"-->
+                        <!--android:layout_height="wrap_content">-->
+                    <!--</androidx.recyclerview.widget.RecyclerView>-->
+                </FrameLayout>
+
+            </LinearLayout>
+            <!--=========================================-->
+            <LinearLayout
+                android:layout_marginTop="10dp"
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:background="#fff"
+                android:layout_height="wrap_content">
+                <LinearLayout
+                    android:layout_marginTop="10dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+                    <TextView
+                        android:paddingLeft="5dp"
+                        android:layout_marginTop="10dp"
+                        android:textStyle="bold"
+                        android:textSize="20dp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="체형교정"/>
+                    <TextView
+                        android:paddingRight="10dp"
+                        android:id="@+id/moreView_2"
+                        android:textStyle="bold"
+                        android:textSize="20dp"
+                        android:gravity="right"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="더보기"/>
+                </LinearLayout>
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+                <View
+                    android:layout_width="wrap_content"
+                    android:layout_height="0.3dp"
+                    android:background="#4682B4" />
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+                <HorizontalScrollView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content">
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+                        <TextView
+                            android:id="@+id/체형교정_목"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="체형교정(목) | "/>
+                        <TextView
+                            android:id="@+id/체형교정_측면척추"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="체형교정(측면척추) | "/>
+                        <TextView
+                            android:id="@+id/체형교정_척추측만증"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="체형교정(척추측만증) | "/>
+                        <TextView
+                            android:id="@+id/체형교정_골반"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="체형교정(골반) | "/>
+                        <TextView
+                            android:id="@+id/체형교정_휜다리"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="체형교정(휜다리) | "/>
+                        <TextView
+                            android:id="@+id/체형교정_평발말발"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="체형교정(평발, 말발)"/>
+
+                    </LinearLayout>
+                </HorizontalScrollView>
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+                <FrameLayout
+                    android:id="@+id/frameLayout_체형교정"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content">
+                    <!--<androidx.recyclerview.widget.RecyclerView-->
+                        <!--android:id="@+id/mainRecyclerView_2"-->
+                        <!--android:layout_width="match_parent"-->
+                        <!--android:layout_height="wrap_content">-->
+                    <!--</androidx.recyclerview.widget.RecyclerView>-->
+                </FrameLayout>
+            </LinearLayout>
+            <!--=========================================-->
+            <LinearLayout
+                android:layout_marginTop="10dp"
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:background="#fff"
+                android:layout_height="wrap_content">
+                <LinearLayout
+                    android:layout_marginTop="10dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+                    <TextView
+                        android:paddingLeft="5dp"
+                        android:layout_marginTop="10dp"
+                        android:textStyle="bold"
+                        android:textSize="20dp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Study"/>
+                    <TextView
+                        android:paddingRight="10dp"
+                        android:id="@+id/moreView_3"
+                        android:textStyle="bold"
+                        android:textSize="20dp"
+                        android:gravity="right"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="더보기"/>
+                </LinearLayout>
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+                <View
+                    android:layout_width="wrap_content"
+                    android:layout_height="0.3dp"
+                    android:background="#4682B4" />
+                <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+                <HorizontalScrollView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content">
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+                        <TextView
+                            android:id="@+id/Study_해부학"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="해부학 | "/>
+                        <TextView
+                            android:id="@+id/Study_물리치료학"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="물리치료학 | "/>
+                        <TextView
+                            android:id="@+id/Study_영양학"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="영양학(영양학, 다이어트) | "/>
+                        <TextView
+                            android:id="@+id/Study_약학"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="약학(건기식,제약)"/>
+
+                    </LinearLayout>
+                </HorizontalScrollView>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+                <FrameLayout
+                    android:id="@+id/frameLayout_Study"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content">
+                    <!--<androidx.recyclerview.widget.RecyclerView-->
+                    <!--android:id="@+id/mainRecyclerView_2"-->
+                    <!--android:layout_width="match_parent"-->
+                    <!--android:layout_height="wrap_content">-->
+                    <!--</androidx.recyclerview.widget.RecyclerView>-->
+                </FrameLayout>
+            </LinearLayout>
+            <!--=========================================-->
+            <LinearLayout
+                android:layout_marginTop="10dp"
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:background="#fff"
+                android:layout_height="wrap_content">
+                <LinearLayout
+                    android:layout_marginTop="10dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+                    <TextView
+                        android:paddingLeft="5dp"
+                        android:layout_marginTop="10dp"
+                        android:textStyle="bold"
+                        android:textSize="20dp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="유튜브(Youtube)"/>
+                    <TextView
+                        android:paddingRight="10dp"
+                        android:id="@+id/moreView_4"
+                        android:textStyle="bold"
+                        android:textSize="20dp"
+                        android:gravity="right"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="더보기"/>
+                </LinearLayout>
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+                <View
+                    android:layout_width="wrap_content"
+                    android:layout_height="0.3dp"
+                    android:background="#4682B4" />
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+                <HorizontalScrollView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content">
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+                        <TextView
+                            android:id="@+id/유튜브_목"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="목 | "/>
+                        <TextView
+                            android:id="@+id/유튜브_어깨"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="어깨 | "/>
+                        <TextView
+                            android:id="@+id/유튜브_등"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="등 | "/>
+                        <TextView
+                            android:id="@+id/유튜브_허리"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="허리 | "/>
+                        <TextView
+                            android:id="@+id/유튜브_골반고관절"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="골반,고관절 | "/>
+                        <TextView
+                            android:id="@+id/유튜브_무릎"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="무릎 | "/>
+                        <TextView
+                            android:id="@+id/유튜브_발"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="발목,발 | "/>
+                        <TextView
+                            android:id="@+id/유튜브_팔꿈치"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="팔꿈치 | "/>
+                        <TextView
+                            android:id="@+id/유튜브_손목손"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="손목,손 | "/>
+                        <TextView
+                            android:id="@+id/유튜브_두통통증"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="두통 통증 | "/>
+                        <TextView
+                            android:id="@+id/유튜브_턱관절"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="턱관절 | "/>
+                        <TextView
+                            android:id="@+id/유튜브_웨이트운동"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="웨이트-운동 | "/>
+                        <TextView
+                            android:id="@+id/유튜브_다이어트"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="다이어트 | "/>
+                        <TextView
+                            android:id="@+id/유튜브_스트레칭"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="스트레칭 | "/>
+                        <TextView
+                            android:id="@+id/유튜브_건강꿀팁정보"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="건강 꿀팁 정보 | "/>
+                        <TextView
+                            android:id="@+id/유튜브_빡빡이의예능"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="빡빡이의 예능 "/>
+
+                    </LinearLayout>
+                </HorizontalScrollView>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+                <FrameLayout
+                    android:id="@+id/frameLayout_유튜브"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content">
+                    <!--<androidx.recyclerview.widget.RecyclerView-->
+                    <!--android:id="@+id/mainRecyclerView_2"-->
+                    <!--android:layout_width="match_parent"-->
+                    <!--android:layout_height="wrap_content">-->
+                    <!--</androidx.recyclerview.widget.RecyclerView>-->
+                </FrameLayout>
+            </LinearLayout>
+
+
+        </LinearLayout>
+    </ScrollView>
+
+
+
+
+</LinearLayout>

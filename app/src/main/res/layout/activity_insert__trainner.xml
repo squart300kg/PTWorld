@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".Insert_Trainner">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+        <TextView
+            android:layout_marginTop= "30dp"
+            android:layout_gravity="center"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="회원가입"
+            android:textSize="30dp"
+            android:textStyle="bold" />
+        <ImageView
+            android:layout_marginTop="15dp"
+            android:id="@+id/profile_image_trainner"
+            android:layout_gravity="center"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:src = "@drawable/profile_image"/>
+
+        <TextView
+            android:onClick="setProfileImage"
+            android:layout_gravity="center"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textStyle="bold"
+            android:text="프로필 설정"
+            android:layout_marginTop="10dp"/>
+
+        <EditText
+            android:layout_marginTop="30dp"
+            android:layout_gravity="center"
+            android:hint="이메일 입력"
+            android:inputType="textEmailAddress"
+            android:id="@+id/trainner_Email"
+            android:layout_width="200dp"
+            android:layout_height="wrap_content" />
+        <EditText
+            android:layout_marginTop="15dp"
+            android:layout_gravity="center"
+            android:hint="비밀번호 입력"
+            android:inputType="textPassword"
+            android:id="@+id/trainner_Password"
+            android:layout_width="200dp"
+            android:layout_height="wrap_content" />
+        <EditText
+            android:layout_marginTop="15dp"
+            android:layout_gravity="center"
+            android:hint="비밀번호 확인 입력"
+            android:inputType="textPassword"
+            android:id="@+id/trainner_PasswordConfirm"
+            android:layout_width="200dp"
+            android:layout_height="wrap_content" />
+        <EditText
+            android:layout_marginTop="15dp"
+            android:layout_gravity="center"
+            android:hint="닉네임 입력"
+            android:inputType="text"
+            android:id="@+id/trainner_Nickname"
+            android:layout_width="200dp"
+            android:layout_height="wrap_content" />
+        <EditText
+            android:visibility="gone"
+            android:layout_marginTop="15dp"
+            android:layout_gravity="center"
+            android:hint="피티 가능지역"
+            android:inputType="text"
+            android:id="@+id/trainner_Place"
+            android:layout_width="200dp"
+            android:layout_height="wrap_content" />
+        <TextView
+            android:visibility="gone"
+            android:layout_gravity="center"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="경력 사항"/>
+        <EditText
+            android:visibility="gone"
+            android:id="@+id/trainner_Prize"
+            android:background="@drawable/border"
+            android:layout_marginTop="15dp"
+            android:lines="10"
+            android:layout_gravity="center"
+            android:inputType="textMultiLine"
+            android:layout_width="200dp"
+            android:layout_height="wrap_content" />
+        <Button
+            android:onClick="signup_Trainner"
+            android:layout_marginTop="15dp"
+            android:layout_gravity="center"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="회원 가입"/>
+    </LinearLayout>
+
+</ScrollView>

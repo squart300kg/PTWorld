@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.example.ptworld">
+
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+
+    <uses-feature
+        android:name="android.hardware.camera"
+        android:required="true" />
+
+    <uses-permission android:name="android.permission.CAMERA" />
+
+    <application
+        android:name=".GlobalApplication"
+        android:allowBackup="true"
+        android:icon="@drawable/logo"
+        android:label="@string/app_name"
+        android:roundIcon="@mipmap/ic_launcher_round"
+        android:supportsRtl="true"
+        android:theme="@style/AppTheme"
+        android:usesCleartextTraffic="true">
+        <activity android:name=".FollowerFollowingCount"></activity>
+
+        <service
+            android:name=".MyFirebaseMessagingService"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="com.google.firebase.MESSAGING_EVENT" />
+            </intent-filter>
+        </service>
+
+        <activity
+            android:name=".PushActivity"
+            android:excludeFromRecents="true"
+            android:launchMode="singleTask"
+            android:taskAffinity=""></activity>
+        <activity android:name=".ContentsHistory" />
+        <activity android:name=".LikeList" />
+        <activity
+            android:name=".Reply"
+            android:windowSoftInputMode="adjustPan" />
+        <activity android:name=".BoardInsert" />
+        <activity android:name=".FragmentBoardInsert" />
+        <activity android:name=".SNSContents" />
+        <activity android:name=".SNSMain" />
+        <activity
+            android:name=".MainDrawer"
+            android:label="@string/app_name"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity android:name=".MyPage" />
+        <activity
+            android:name=".BottomNavBar"
+            android:label="@string/title_activity_bottom_nav_bar" />
+        <activity android:name=".MoreViewContents" />
+        <activity android:name=".MoreView" />
+        <activity android:name=".Contents" />
+        <activity android:name=".MainContents" />
+        <activity android:name=".Splash" />
+        <activity
+            android:name=".MainActivity"
+            android:label="@string/title_activity_main"
+            android:theme="@style/AppTheme.NoActionBar" />
+
+        <meta-data
+            android:name="com.kakao.sdk.AppKey"
+            android:value="@string/kakao_app_key" />
+
+        <activity
+            android:name=".Popup_SNS"
+            android:screenOrientation="portrait"
+            android:theme="@style/popupTheme" />
+        <activity android:name=".MainActivity2" />
+        <activity android:name=".Test" />
+
+        <provider
+            android:name="androidx.core.content.FileProvider"
+            android:authorities="com.bignerdranch.android.test.fileprovider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/filepaths" />
+        </provider>
+
+        <activity
+            android:name="com.soundcloud.android.crop.CropImageActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.AppCompat.NoActionBar" />
+        <activity
+            android:name=".Popup_SelectSettingProfileImage"
+            android:screenOrientation="portrait"
+            android:theme="@style/popupTheme" />
+        <activity android:name=".Insert_Client" />
+        <activity android:name=".Insert_Trainner" />
+        <activity
+            android:name=".Popup_InsertUser"
+            android:screenOrientation="portrait"
+            android:theme="@style/popupTheme" />
+        <activity android:name=".Login">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+    </application>
+
+</manifest>

@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".Login">
+
+    <LinearLayout
+        android:focusable="true"
+        android:focusableInTouchMode="true"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation = "vertical">
+
+        <ImageView
+            android:layout_marginTop="50dp"
+            android:layout_marginLeft="100dp"
+            android:layout_width="200dp"
+            android:layout_height="200dp"
+            android:src = "@drawable/logo"/>
+
+        <EditText
+            android:id="@+id/email"
+            android:layout_gravity="center"
+            android:layout_width="250dp"
+            android:inputType="textEmailAddress"
+            android:layout_height="wrap_content"
+            android:hint="이메일 입력"/>
+        <EditText
+            android:id="@+id/password"
+            android:layout_gravity="center"
+            android:layout_width="250dp"
+            android:inputType="textPassword"
+            android:layout_height="wrap_content"
+            android:hint="비밀번호 입력"/>
+
+        <LinearLayout
+            android:layout_marginTop="40dp"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:orientation="vertical"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+            <Button
+                android:background="@drawable/border_main"
+                android:onClick="trainner_login"
+                android:layout_width="230dp"
+                android:layout_height="50dp"
+                android:text="로그인"/>
+            <com.nhn.android.naverlogin.ui.view.OAuthLoginButton
+                android:layout_marginTop="31dp"
+                android:id="@+id/buttonNaverLogin"
+                android:layout_gravity = "center"
+                android:layout_width="250dp"
+                android:layout_height="50dp" />
+            <com.kakao.usermgmt.LoginButton
+                android:layout_marginTop="10dp"
+                android:id="@+id/com_kakao_login"
+                android:layout_gravity = "center"
+                android:layout_width="230dp"
+                android:layout_height="50dp"  />
+            <com.google.android.gms.common.SignInButton
+                android:layout_marginTop="10dp"
+                android:id="@+id/sign_in_button"
+                android:layout_width="230dp"
+                android:layout_height="50dp" />
+        </LinearLayout>
+
+
+        <LinearLayout
+            android:layout_marginTop="20dp"
+            android:layout_gravity="center"
+            android:orientation = "horizontal"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+            <TextView
+                android:textSize="20dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text = "회원가입"
+                android:onClick="popup_InserUser"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="/"/>
+            <TextView
+                android:textSize="20dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text = "비밀번호 찾기"/>
+        </LinearLayout>
+    </LinearLayout>
+
+
+
+
+</ScrollView>

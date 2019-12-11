@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="251dp"
+    android:layout_height="150dp"
+    android:orientation="vertical"
+    android:background="#FFFF"
+    tools:context=".Popup_SelectSettingProfileImage">
+    <TextView
+        android:textColor="#000"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="프로필 설정 방법 선택"
+        android:textStyle="bold"
+        android:textSize="20dp"
+        android:layout_gravity="center"
+        android:layout_marginTop="30dp"/>
+    <TextView
+        android:onClick="capture"
+        android:textColor="#000"
+        android:id="@+id/capture"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="사진 촬영"
+        android:layout_gravity="center"
+        android:textSize="15dp"
+        android:layout_marginTop="10dp"/>
+    <TextView
+        android:onClick="gallery"
+        android:textColor="#000"
+        android:id="@+id/gallery"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="앨범에서 선택"
+        android:layout_gravity="center"
+        android:textSize="15dp"
+        android:layout_marginTop="20dp"/>
+
+</LinearLayout>
