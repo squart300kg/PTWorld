@@ -76,12 +76,58 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                 sendNotification_Reply(remoteMessage.getNotification().getBody(), remoteMessage.getData().get("boardno"), remoteMessage.getData().get("replyno"));
             } else if (remoteMessage.getNotification().getTitle().equals("대댓글")){
                 sendNotification_ReReply(remoteMessage.getNotification().getBody(), remoteMessage.getData().get("boardno"), remoteMessage.getData().get("replyno"), remoteMessage.getData().get("rereplyno"));
+            } else if (remoteMessage.getNotification().getTitle().equals("채팅")){
+                sendNotification_Chatting(remoteMessage.getNotification().getBody(), remoteMessage.getData().get("receiveYourNickname"));
             }
 //            remoteMessage.getNotification().get
 
 
         }
     }
+
+    private void sendNotification_Chatting(String messageBody, String receiveYourNickname) {
+//        String nickname[] = messageBody.split("님이 회원님");
+
+
+        Intent intent = new Intent(this, Message.class);
+//        intent.putExtra("receiveYourNickname", receiveYourNickname);
+        intent.setAction(Intent.ACTION_MAIN);
+        intent.addCategory(Intent.CATEGORY_LAUNCHER);
+
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        PendingIntent pendingIntent = PendingIntent.getActivity(this, 0 /* Request code */, intent,
+                PendingIntent.FLAG_ONE_SHOT);
+
+        String channelId = getString(R.string.default_notification_channel_id);
+//        NotificationManager notificationManager = (NotificationManager)getSystemService(Context.NOTIFICATION_SERVICE);
+//        NotificationChannel notificationChannel = new NotificationChannel("channel_id", "channel_name",NotificationManager.IMPORTANCE_DEFAULT);
+        Uri defaultSoundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
+        NotificationCompat.Builder notificationBuilder =
+                new NotificationCompat.Builder(this, channelId)
+                        .setSmallIcon(R.drawable.logo)
+                        .setContentTitle("채팅채팅")
+                        .setContentText(messageBody)
+                        .setAutoCancel(true)
+                        .setSound(defaultSoundUri)
+                        .setContentIntent(pendingIntent);
+
+        NotificationManager notificationManager =
+                (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+
+        // Since android Oreo notification channel is needed.
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            // Create channel to show notifications.
+            String channelName = getString(R.string.default_notification_channel_name);
+            NotificationChannel channel = new NotificationChannel(channelId, channelName, NotificationManager.IMPORTANCE_HIGH);
+            notificationManager.createNotificationChannel(channel);
+        }
+
+        notificationManager.notify(0, notificationBuilder.build());
+
+        //노티피케이션을 전송했으면 이제 DB에 넣어준다.
+//        new Thread_Insert_Noti().execute("http://"+IP_ADDRESS+"/user_signup/insert_noti.php", messageBody, nickname[0], targetNickname, TYPE);
+    }
+
     private void handleNow() {
         Log.d(TAG, "Short lived task is done.");
     }

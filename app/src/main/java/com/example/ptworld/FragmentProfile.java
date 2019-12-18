@@ -71,6 +71,7 @@ public class FragmentProfile extends Fragment{
     ArrayList<ProfileDTO> list = new ArrayList<>();
     ArrayList<Bitmap> list_thumbnail = new ArrayList<>();
     ImageView sns_profile_profile_image;
+    ImageView sns_profile_message;
     TextView sns_profile_nickname;
 
     TextView sns_profile_update;
@@ -90,10 +91,12 @@ public class FragmentProfile extends Fragment{
     public FragmentProfile(Activity context){
         this.context = context;
     }
+
     public static FragmentProfile fragment_profile(String nick){
         nickname = nick;
         return new FragmentProfile(context);
     }
+
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         //두가지의 경우가 있다.
         //1. 내 프로필에 들어온 경우
@@ -107,6 +110,7 @@ public class FragmentProfile extends Fragment{
 
         followingCount2 = rootView.findViewById(R.id.followingCount2);
         followerCount2 = rootView.findViewById(R.id.followerCount2);
+        sns_profile_message = rootView.findViewById(R.id.sns_profile_message);
 
         boardCount = rootView.findViewById(R.id.boardCount);
         followerCount = rootView.findViewById(R.id.followerCount);
@@ -125,7 +129,13 @@ public class FragmentProfile extends Fragment{
         if(Build.VERSION.SDK_INT >= 21) {
             sns_profile_profile_image.setClipToOutline(true);
         }
-
+        //메시지버튼 클릭
+        sns_profile_message.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View view) {
+            startActivity(new Intent(context, Message.class));
+            }
+        });
         //팔로워 버튼 클릭
         followerCount2.setOnClickListener(new View.OnClickListener() {
             @Override

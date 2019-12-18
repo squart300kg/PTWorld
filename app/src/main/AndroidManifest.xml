@@ -21,7 +21,15 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
-        <activity android:name=".FollowerFollowingCount"></activity>
+        <activity
+            android:name=".Message"
+            android:parentActivityName=".Login">
+            <meta-data
+                android:name = "android:supportPARENT_ACTIVITY"
+                android:value=".Login"
+                />
+        </activity>
+        <activity android:name=".FollowerFollowingCount" />
 
         <service
             android:name=".MyFirebaseMessagingService"
@@ -35,7 +43,7 @@
             android:name=".PushActivity"
             android:excludeFromRecents="true"
             android:launchMode="singleTask"
-            android:taskAffinity=""></activity>
+            android:taskAffinity="" />
         <activity android:name=".ContentsHistory" />
         <activity android:name=".LikeList" />
         <activity
