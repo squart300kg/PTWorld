@@ -1,4 +1,10 @@
 <resources>
+<!--    webRTC를 위한 설정-->
+    <style name="CallActivityTheme" parent="android:Theme.Black">
+        <item name="android:windowActionBar">false</item>
+        <item name="android:windowFullscreen">true</item>
+        <item name="android:windowNoTitle">true</item>
+    </style>
 
     <!-- Base application theme. -->
     <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">

@@ -7,7 +7,7 @@
     android:layout_height="150dp"
     android:orientation="vertical"
     android:background="#FFFF"
-    tools:context=".Popup_SelectSettingProfileImage">
+    tools:context=".Activity.Popup_SelectSettingProfileImage">
     <TextView
         android:textColor="#000"
         android:layout_width="wrap_content"

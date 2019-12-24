@@ -18,9 +18,16 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
+    compileOptions {
+        targetCompatibility 1.8
+        sourceCompatibility 1.8
+    }
 }
 
 dependencies {
+    //webRTC라이브러리
+    implementation 'org.webrtc:google-webrtc:1.0.+'
+    implementation files('libs/autobanh.jar')
 
     implementation 'com.google.firebase:firebase-database:19.1.0'
     implementation 'com.squareup.okhttp3:okhttp:3.8.1'

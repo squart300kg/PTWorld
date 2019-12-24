@@ -10,7 +10,7 @@
     android:layout_margin="10dp"
     android:orientation="vertical"
     android:id="@+id/mainFrame"
-    tools:context=".MainContents">
+    tools:context=".Activity.MainContents">
     <ImageView
         android:id="@+id/mainImage"
         android:layout_width="100dp"
