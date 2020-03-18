@@ -71,7 +71,7 @@ public class AdapterSNSPage extends PagerAdapter{
 //                            //좋아요가 눌린상태가 아니라면 스레드를 실행시켜 좋아요를 1 늘려준다.
 //                            String type = "like";
 ////                            Thread_Like thread_like = new Thread_Like(position);
-//                            new Thread_Like(holder.getAdapterPosition()).execute("http://"+IP_ADDRESS+"/user_signup/like.php", type, no+"", TrainnerInfo.email, TrainnerInfo.nickname);
+//                            new Thread_Like(holder.getAdapterPosition()).execute("http://"+IP_ADDRESS+"/user_signup/like.php", type, no+"", UserInfo.email, UserInfo.nickname);
 //                            holder.sns_like.playAnimation();
 //                            holder.sns_like.setVisibility(View.VISIBLE);
 //                            holder.sns_like2.setVisibility(View.GONE);

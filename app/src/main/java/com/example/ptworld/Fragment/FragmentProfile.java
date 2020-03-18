@@ -30,8 +30,8 @@ import com.example.ptworld.Adapter.AdapterProfile;
 import com.example.ptworld.Activity.FollowerFollowingCount;
 import com.example.ptworld.Activity.Message;
 import com.example.ptworld.DTO.ProfileDTO;
+import com.example.ptworld.DTO.UserInfo;
 import com.example.ptworld.R;
-import com.example.ptworld.DTO.TrainnerInfo;
 import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
@@ -136,7 +136,7 @@ public class FragmentProfile extends Fragment{
             public void onClick(View view) {
                 Intent intent = new Intent(context, FollowerFollowingCount.class);
                 intent.putExtra("type", "followerCount");
-                intent.putExtra("email", TrainnerInfo.email);
+                intent.putExtra("email", UserInfo.email);
                 context.startActivity(intent.addFlags(FLAG_ACTIVITY_NEW_TASK));
             }
         });
@@ -147,7 +147,7 @@ public class FragmentProfile extends Fragment{
 
                 Intent intent = new Intent(context, FollowerFollowingCount.class);
                 intent.putExtra("type", "followingCount");
-                intent.putExtra("email", TrainnerInfo.email);
+                intent.putExtra("email", UserInfo.email);
                 context.startActivity(intent.addFlags(FLAG_ACTIVITY_NEW_TASK));
             }
         });
@@ -159,7 +159,7 @@ public class FragmentProfile extends Fragment{
             @Override
             public void onClick(View view) {
                 //팔로우 버튼 갱신 스레드
-                new Thread_GoFollow().execute("http://"+IP_ADDRESS+"/user_signup/gotofollow.php", "follow", TrainnerInfo.nickname, nickname);
+                new Thread_GoFollow().execute("http://"+IP_ADDRESS+"/user_signup/gotofollow.php", "follow", UserInfo.nickname, nickname);
                 //이 버튼을 클릭했을 경우엔 해당 닉네임 사용자에게 FCM알림이 가야한다.
                 new Thread_Push().execute("https://fcm.googleapis.com/fcm/send",device_token);
             }
@@ -170,7 +170,7 @@ public class FragmentProfile extends Fragment{
             @Override
             public void onClick(View view) {
                 //팔로우 버튼 갱신 스레드
-                new Thread_GoFollow().execute("http://"+IP_ADDRESS+"/user_signup/gotofollow.php", "eachfollow", TrainnerInfo.nickname, nickname);
+                new Thread_GoFollow().execute("http://"+IP_ADDRESS+"/user_signup/gotofollow.php", "eachfollow", UserInfo.nickname, nickname);
                 //노티피케이션 전송 스레드
                 new Thread_Push().execute("https://fcm.googleapis.com/fcm/send",device_token);
             }
@@ -179,8 +179,8 @@ public class FragmentProfile extends Fragment{
         sns_profile_following.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Log.i("로그인한 회원의 닉네임",TrainnerInfo.nickname);
-                new Thread_GoFollow().execute("http://"+IP_ADDRESS+"/user_signup/gotofollow.php", "unfollow", TrainnerInfo.nickname, nickname);
+                Log.i("로그인한 회원의 닉네임", UserInfo.nickname);
+                new Thread_GoFollow().execute("http://"+IP_ADDRESS+"/user_signup/gotofollow.php", "unfollow", UserInfo.nickname, nickname);
             }
         });
 
@@ -200,7 +200,7 @@ public class FragmentProfile extends Fragment{
             new Thread_SNSProfile().execute("http://"+IP_ADDRESS+"/user_signup/snsprofile.php", nickname);
 
             //나와 어떤 관계인지 파악한다.
-            new Thread_Follow().execute("http://"+IP_ADDRESS+"/user_signup/user_relation.php", nickname, TrainnerInfo.nickname);
+            new Thread_Follow().execute("http://"+IP_ADDRESS+"/user_signup/user_relation.php", nickname, UserInfo.nickname);
 //            nickname = "";
         } else {
             //내 프로필에 들어왔다.
@@ -209,8 +209,8 @@ public class FragmentProfile extends Fragment{
             sns_profile_following.setVisibility(View.GONE);
             sns_profile_update.setVisibility(View.VISIBLE);
             Log.i("Profile이동","내껄로 이동함");
-            Log.i("Profile이동,닉네임",TrainnerInfo.nickname);
-            new Thread_SNSProfile().execute("http://"+IP_ADDRESS+"/user_signup/snsprofile.php", TrainnerInfo.nickname);
+            Log.i("Profile이동,닉네임", UserInfo.nickname);
+            new Thread_SNSProfile().execute("http://"+IP_ADDRESS+"/user_signup/snsprofile.php", UserInfo.nickname);
             //로그인중인 회원의 프로필 정보들을 모두 가져온다.(nickname으로 식별)
         }
 
@@ -254,7 +254,7 @@ public class FragmentProfile extends Fragment{
             //Notification
             JsonObject notification = new JsonObject();
             notification.addProperty("title", "팔로우 요청");
-            notification.addProperty("body", TrainnerInfo.nickname+"님이 회원님께 팔로우를 신청하셨습니다.");
+            notification.addProperty("body", UserInfo.nickname+"님이 회원님께 팔로우를 신청하셨습니다.");
             Log.i("노티전송2",notification.get("title")+"");
             Log.i("노티전송2",notification.get("body")+"");
             jsonObj.add("notification", notification);

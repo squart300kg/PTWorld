@@ -8,6 +8,7 @@ import android.Manifest;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.Signature;
@@ -16,22 +17,30 @@ import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.util.Base64;
 import android.util.Log;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.EditText;
 import android.widget.Toast;
 
 import com.example.ptworld.JavaUtils.GlobalApplication;
 import com.example.ptworld.R;
-import com.example.ptworld.DTO.TrainnerInfo;
+import com.example.ptworld.DTO.UserInfo;
 import com.google.android.gms.auth.api.Auth;
+import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
+import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.auth.api.signin.GoogleSignInResult;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.SignInButton;
+import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.tasks.Task;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.kakao.auth.ISessionCallback;
 import com.kakao.auth.KakaoSDK;
 import com.kakao.auth.Session;
@@ -62,7 +71,7 @@ import java.util.List;
 import static com.kakao.util.helper.Utility.getPackageInfo;
 
 public class Login extends AppCompatActivity implements GoogleApiClient.OnConnectionFailedListener {
-    String TAG = "MainActivity_php";
+    String TAG = "MainActivity : ";
     String IP_ADDRESS = "squart300kg.cafe24.com";
     EditText email;
     EditText password;
@@ -73,10 +82,6 @@ public class Login extends AppCompatActivity implements GoogleApiClient.OnConnec
     private GoogleApiClient mGoogleApiClient;
     private int RC_SIGN_IN = 1000;
 
-    private static String OAUTH_CLIENT_ID = "4Fa9DLWUlQLXJB1BZLuX";
-    private static String OAUTH_CLIENT_SECRET = "pi24PFeuzJ";
-    private static String OAUTH_CLIENT_NAME = "PTWorld";
-
     static OAuthLogin naverLoginInstance;
     private OAuthLoginButton naverLogInButton;
     private static Context context;
@@ -85,14 +90,14 @@ public class Login extends AppCompatActivity implements GoogleApiClient.OnConnec
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.login);
+
+        email = findViewById(R.id.email);
+        password = findViewById(R.id.password);
         //카아로를 시작하기 전에 카카오 SDK를 초기화 한다.
 //        KakaoSDK.init(new GlobalApplication.KakaoSDKAdapter());
         if (KakaoSDK.getAdapter() == null) {
             KakaoSDK.init(new GlobalApplication.KakaoSDKAdapter());
         }
-
-        email = findViewById(R.id.email);
-        password = findViewById(R.id.password);
 
         // 6.0 마쉬멜로우 이상일 경우에는 권한 체크 후 권한 요청
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
@@ -104,84 +109,198 @@ public class Login extends AppCompatActivity implements GoogleApiClient.OnConnec
             }
         }
 
-        //네아로를 시작
-        init();
-        init_View();
+        //네이버 로그인
+        naver_login_init();
 
-        //카아로를 시작
+        //카카오 로그인
+        kakao_login_init();
+
+        //구글 로그인
+        google_login_init();
+
+        Log.i("key_hash", getKeyHash(getApplicationContext()));
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        GoogleSignInAccount account = GoogleSignIn.getLastSignedInAccount(this);
+        updateUI(account);
+
+    }
+
+    private void updateUI(GoogleSignInAccount acct) {
+        Log.i("구아로0", "email:" + acct.getEmail());
+        Log.i("구아로0", "id:" + acct.getId());
+        Log.i("구아로0", "profile:" + acct.getPhotoUrl());
+        Log.i("구아로0", "DispName > " + acct.getDisplayName());
+        Log.i("구아로0", "getFamilyName > " + acct.getFamilyName());
+        Log.i("구아로0", "getGivenName > " + acct.getGivenName());
+        Log.i("구아로0", "getId > " + acct.getId());
+        Log.i("구아로0", "getIdToken > " + acct.getIdToken());
+        Log.i("구아로0", "getServerAuthCode > " + acct.getServerAuthCode());
+
+        SharedPreferences login_token =
+                getSharedPreferences("login_token", MODE_PRIVATE);
+        SharedPreferences.Editor editor = login_token.edit();
+
+        if(!login_token.getString("email", "").equals("") &&
+                login_token.getString("social_type", "").equals("google")){
+            Thread_LoginSuccess thread_loginSuccess = new Thread_LoginSuccess();
+            thread_loginSuccess.execute("http://"+IP_ADDRESS+"/user_signup/login_success.php", acct.getEmail());
+
+        }
+        else
+        {
+
+        }
+
+
+    }
+
+    //TODO :: 네이버 로그인
+    private void naver_login_init(){
+        Log.i("social type", "네아로");
+        SharedPreferences login_token =
+                getSharedPreferences("login_token", MODE_PRIVATE);
+
+        context = this;
+        naverLoginInstance = OAuthLogin.getInstance();
+        naverLoginInstance.init(this,
+                getString(R.string.OAUTH_CLIENT_ID),
+                getString(R.string.OAUTH_CLIENT_SECRET),
+                getString(R.string.OAUTH_CLIENT_NAME));
+
+        naverLogInButton = findViewById(R.id.buttonNaverLogin);
+
+        //로그인 핸들러
+        OAuthLoginHandler naverLoginHandler  = new OAuthLoginHandler() {
+            @Override
+            public void run(boolean success) {
+                if (success) {//로그인 성공
+
+                    //DB에서 해당 이메일을 가지고 있는 회원을 검색한다. 검색해서 있으면
+                    //1. 로그인 시켜준다 UserInfo에 회원정보 저장
+                    //2. 로그인이 완료되었으니까 메인으로 이동시켜준다.
+
+                    String accessToken = naverLoginInstance.getAccessToken(context);
+                    String refreshToken = naverLoginInstance.getRefreshToken(context);
+                    long expiresAt = naverLoginInstance.getExpiresAt(context);
+                    String tokenType = naverLoginInstance.getTokenType(context);
+
+                    //접근토큰을 SharedPreference에 저장
+                    SharedPreferences login_token
+                            = getSharedPreferences("login_token", MODE_PRIVATE);
+
+                    SharedPreferences.Editor editor = login_token.edit();
+                    editor.putString("social_type", "naver");
+                    editor.putString("access_token", accessToken);
+                    editor.putString("refresh_token", refreshToken);
+                    editor.putString("expired_at", expiresAt+"");
+                    editor.putString("token_type", tokenType);
+                    editor.commit();
+
+                    new RequestApiTask().execute();
+
+                    Log.i("발급받은 - 접근토근 : ",accessToken);
+                    Log.i("발급받은 - 갱신토근 : ", refreshToken);
+                    Log.i("발급받은 - 만료시간 : ",expiresAt+"");
+                    Log.i("발급받은 - 토근타입 : ",tokenType);
+                } else {//로그인 실패
+                    String errorCode = naverLoginInstance.getLastErrorCode(context).getCode();
+                    String errorDesc = naverLoginInstance.getLastErrorDesc(context);
+                    Log.i("로그인 - errorCode : ",errorCode);
+                    Log.i("로그인 - errorDesc : ", errorDesc);
+                    Toast.makeText(context, "errorCode:" + errorCode + ", errorDesc:" + errorDesc, Toast.LENGTH_SHORT).show();
+                }
+            }
+
+        };
+        if(!login_token.getString("access_token", "").equals("") &&
+                login_token.getString("social_type", "").equals("naver")){
+            //이미 토큰이 있으므로 메인페이지로 넘겨줌
+            Log.i("본래 소유 토큰 정보", login_token.getString("access_token" , ""));
+            Log.i("본래 소유 토큰 정보", login_token.getString("refresh_token" , ""));
+            Log.i("본래 소유 토큰 정보", login_token.getString("token_type" , ""));
+            Log.i("본래 소유 토큰 정보", login_token.getString("expired_at" , ""));
+            new RequestApiTask().execute();
+        }
+        else
+        {
+            //토큰이 없으므로 갱신시키는 로직을 시행
+            naverLogInButton.setOAuthLoginHandler(naverLoginHandler);
+        }
+
+
+    }
+
+    //TODO : kakao로그인
+    private void kakao_login_init(){
+        Log.i("social type", "카아로");
         callback = new SessionCallback();
         Session.getCurrentSession().addCallback(callback);
         Session.getCurrentSession().checkAndImplicitOpen();
-
-
-        Log.i("key_hash", getKeyHash(getApplicationContext()));
-
-        setGoogleLogin();
-
     }
-    private void setGoogleLogin() {
 
+    //TODO : Google로그인
+    private void google_login_init() {
+        Log.i("social type", "구아로");
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-                .requestIdToken(getString(R.string.default_web_client_id))
+//                .requestIdToken(getString(R.string.default_web_client_id))
                 .requestEmail()
                 .build();
 
-        mGoogleApiClient = new GoogleApiClient.Builder(this)
-                .enableAutoManage(this, this)
-                .addApi(Auth.GOOGLE_SIGN_IN_API, gso)
-                .build();
-//        mAuth = FirebaseAuth.getInstance();
-        SignInButton signInButton = (SignInButton) findViewById(R.id.sign_in_button);
+        GoogleSignInClient mGoogleSignInClient
+                = GoogleSignIn.getClient(this, gso);
+
+//                mGoogleApiClient = new GoogleApiClient.Builder(this)
+//                .enableAutoManage(this, this)
+//                .addApi(Auth.GOOGLE_SIGN_IN_API, gso)
+//                .build();
 
         findViewById(R.id.sign_in_button).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent signInIntent = Auth.GoogleSignInApi.getSignInIntent(mGoogleApiClient);
+//                Intent signInIntent = Auth.GoogleSignInApi.getSignInIntent(mGoogleApiClient);
+                Intent signInIntent = mGoogleSignInClient.getSignInIntent();
                 startActivityForResult(signInIntent, RC_SIGN_IN);
             }
         });
     }
+
+
     @Override
     public void onConnectionFailed(@NonNull ConnectionResult connectionResult) { }
-//    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-//
-//        super.onActivityResult(requestCode, resultCode, data);
-//
-//        if(requestCode == RC_SIGN_IN) {
-//            GoogleSignInResult result = Auth.GoogleSignInApi.getSignInResultFromIntent(data);
-//            handleSignInResult(result);
-//        }
-//    }//카카오 로그인부분과 합침. 왜? 메소드 이름이 같기떄문에
-    private void handleSignInResult(GoogleSignInResult result) {
 
-        if(result.isSuccess()) {
-            final GoogleSignInAccount acct = result.getSignInAccount();
+    private void handleSignInResult(Task<GoogleSignInAccount> completedTask) {
 
-//            AuthCredential credential = GoogleAuthProvider.getCredential(acct.getIdToken(),null);
-//            mAuth.signInWithCredential(credential)
-//                    .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
-//                        @Override
-//                        public void onComplete(@NonNull Task<AuthResult> task) {
-//                            if(!task.isSuccessful()){
-//                                Toast.makeText(Login.this, "인증 실패", Toast.LENGTH_SHORT).show();
-//                            }else{
-                                Toast.makeText(Login.this, "구글 로그인 성공", Toast.LENGTH_SHORT).show();
-                                Log.i("구아로", "email:" + acct.getEmail());
-                                Log.i("구아로", "id:" + acct.getId());
-                                Log.i("구아로", "profile:" + acct.getPhotoUrl());
-                                Log.i("구아로", "DispName > " + acct.getDisplayName());
-
-            //카카오에서 가져온 이메일이 DB에 존재할 경우 회원가입을 하지 않고 바로 메인 액티비티로 넘겨준다.
-            Thread_LoginSuccess thread_loginSuccess = new Thread_LoginSuccess();
-            //Thread_LoginSuccess메소드는 로그인을 시도하려 할 때, 로그인을 시도하려는 이메일이 DB에 존재하는 경우는
-            //바로 메인액티비티로 넘겨주고, DB에 존재하지 않는다면 회원가입 팝업창을 띄워주는 스레드이다.
-            thread_loginSuccess.execute("http://"+IP_ADDRESS+"/user_signup/login_success.php", acct.getEmail(), acct.getPhotoUrl().toString());
-//                            }
-//                        }
-//                    });
-
-
+        GoogleSignInAccount acct = null;
+        try {
+            acct = completedTask.getResult(ApiException.class);
+        } catch (ApiException e) {
+            e.printStackTrace();
         }
+
+        Toast.makeText(Login.this, "구글 로그인 성공", Toast.LENGTH_SHORT).show();
+        Log.i("구아로", "email:" + acct.getEmail());
+        Log.i("구아로", "id:" + acct.getId());
+        Log.i("구아로", "profile:" + acct.getPhotoUrl());
+        Log.i("구아로", "DispName > " + acct.getDisplayName());
+
+        SharedPreferences login_token =
+                getSharedPreferences("login_token", MODE_PRIVATE);
+        SharedPreferences.Editor editor = login_token.edit();
+        editor.putString("social_type", "google");
+        editor.putString("email", acct.getEmail());
+        editor.commit();
+
+        //카카오에서 가져온 이메일이 DB에 존재할 경우 회원가입을 하지 않고 바로 메인 액티비티로 넘겨준다.
+        Thread_LoginSuccess thread_loginSuccess = new Thread_LoginSuccess();
+        //Thread_LoginSuccess메소드는 로그인을 시도하려 할 때, 로그인을 시도하려는 이메일이 DB에 존재하는 경우는
+        //바로 메인액티비티로 넘겨주고, DB에 존재하지 않는다면 회원가입 팝업창을 띄워주는 스레드이다.
+        thread_loginSuccess.execute("http://"+IP_ADDRESS+"/user_signup/login_success.php", acct.getEmail());
+
+
     }
 
     public static String getKeyHash(final Context context) {
@@ -245,13 +364,19 @@ public class Login extends AppCompatActivity implements GoogleApiClient.OnConnec
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+
+        //카카오 로그인 로직
         if (Session.getCurrentSession().handleActivityResult(requestCode, resultCode, data)) {
             return;
-        }//카카오 로그인 로직
+        }
+
+        //구글 로그인 로직
         if(requestCode == RC_SIGN_IN) {
-            GoogleSignInResult result = Auth.GoogleSignInApi.getSignInResultFromIntent(data);
-            handleSignInResult(result);
-        }//구글 로그인 로직
+//            GoogleSignInResult result = Auth.GoogleSignInApi.getSignInResultFromIntent(data);
+//            handleSignInResult(result);
+            Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
+            handleSignInResult(task);
+        }
         super.onActivityResult(requestCode, resultCode, data);
     }
     @Override
@@ -276,53 +401,12 @@ public class Login extends AppCompatActivity implements GoogleApiClient.OnConnec
                 Logger.e(exception);
             }
         }
+        protected void redirectSignupActivity() {
+            requestMe();
+        }
     }
-    protected void redirectSignupActivity() {
-        requestMe();
-    }
-    private void init(){
-        context = this;
-        naverLoginInstance = OAuthLogin.getInstance();
-        naverLoginInstance.init(this,OAUTH_CLIENT_ID, OAUTH_CLIENT_SECRET, OAUTH_CLIENT_NAME);
 
-    }
-    private void init_View(){
-        naverLogInButton = findViewById(R.id.buttonNaverLogin);
 
-        //로그인 핸들러
-        OAuthLoginHandler naverLoginHandler  = new OAuthLoginHandler() {
-            @Override
-            public void run(boolean success) {
-                if (success) {//로그인 성공
-
-                    //DB에서 해당 이메일을 가지고 있는 회원을 검색한다. 검색해서 있으면
-                    //1. 로그인 시켜준다 UserInfo에 회원정보 저장
-                    //2. 로그인이 완료되었으니까 메인으로 이동시켜준다.
-
-                    String accessToken = naverLoginInstance.getAccessToken(context);
-                    String refreshToken = naverLoginInstance.getRefreshToken(context);
-                    long expiresAt = naverLoginInstance.getExpiresAt(context);
-                    String tokenType = naverLoginInstance.getTokenType(context);
-
-                    new RequestApiTask().execute();
-
-                    Log.i("로그인 - 접근토근 : ",accessToken);
-                    Log.i("로그인 - 갱신토근 : ", refreshToken);
-                    Log.i("로그인 - 만료시간 : ",expiresAt+"");
-                    Log.i("로그인 - 토근타입 : ",tokenType);
-                } else {//로그인 실패
-                    String errorCode = naverLoginInstance.getLastErrorCode(context).getCode();
-                    String errorDesc = naverLoginInstance.getLastErrorDesc(context);
-                    Log.i("로그인 - errorCode : ",errorCode);
-                    Log.i("로그인 - errorDesc : ", errorDesc);
-                    Toast.makeText(context, "errorCode:" + errorCode + ", errorDesc:" + errorDesc, Toast.LENGTH_SHORT).show();
-                }
-            }
-
-        };
-        naverLogInButton.setOAuthLoginHandler(naverLoginHandler);
-
-    }
     private class RequestApiTask extends AsyncTask<Void, Void, String> {
         @Override
         protected void onPreExecute() {
@@ -378,7 +462,7 @@ public class Login extends AppCompatActivity implements GoogleApiClient.OnConnec
 
     public void popup_InserUser(View view) {
 //        Intent intent = new Intent(getApplicationContext(), Popup_InsertUser.class);
-        Intent intent = new Intent(getApplicationContext(), Insert_Trainner.class);
+        Intent intent = new Intent(getApplicationContext(), Insert_User.class);
         intent.putExtra("email","");
         startActivity(intent);
     }
@@ -392,8 +476,6 @@ public class Login extends AppCompatActivity implements GoogleApiClient.OnConnec
 
     }
 
-    public void client_login(View view) {
-    }
 
     class Login_Thread extends AsyncTask<String, Void, String>{
         ProgressDialog progressDialog;
@@ -487,8 +569,11 @@ public class Login extends AppCompatActivity implements GoogleApiClient.OnConnec
         }
     }
     class Thread_LoginSuccess extends AsyncTask<String, Void, String> {
+
         String email1;
         String profile_imageUrl;
+        private ProgressDialog progressDialog;
+
         @Override
         protected String doInBackground(String... params) {
             String email = params[1];
@@ -560,6 +645,20 @@ public class Login extends AppCompatActivity implements GoogleApiClient.OnConnec
         }
 
         @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+
+             //진행다일로그 시작
+            progressDialog = new ProgressDialog(Login.this);
+            progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+            progressDialog.setMessage("잠시 기다려 주세요.");
+            progressDialog.show();
+
+            getWindow().setFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE,
+                    WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
+        }
+
+        @Override
         protected void onPostExecute(String result) {
             super.onPostExecute(result);
             if(result.contains("false")){
@@ -585,15 +684,15 @@ public class Login extends AppCompatActivity implements GoogleApiClient.OnConnec
                     prize = jsonObject.getString("prize");
                     place = jsonObject.getString("place");
 
-                    TrainnerInfo.profile_image = profile_image;
-                    TrainnerInfo.email = email;
-                    TrainnerInfo.password = password;
-                    TrainnerInfo.nickname = nickname;
-                    TrainnerInfo.prize = prize;
-                    TrainnerInfo.place = place;
+                    UserInfo.profile_image = profile_image;
+                    UserInfo.email = email;
+                    UserInfo.password = password;
+                    UserInfo.nickname = nickname;
+                    UserInfo.prize = prize;
+                    UserInfo.place = place;
 
-                    Log.i("Thread_email",TrainnerInfo.email);
-                    Log.i("Thread_bitbap",  TrainnerInfo.profile_image+"");
+                    Log.i("Thread_email", UserInfo.email);
+                    Log.i("Thread_bitbap",  UserInfo.profile_image+"");
                     Log.i("Thread_LoginSuccess","성공");
 
                     startActivity(new Intent(getApplicationContext(), MainDrawer.class));
@@ -607,7 +706,7 @@ public class Login extends AppCompatActivity implements GoogleApiClient.OnConnec
                         } else {
                             //만약 회원이 아니라면 회원가입을 해야한다.
                             Log.i("OAuth로그인 필요","필요");
-                            Intent intent = new Intent(getApplicationContext(), Insert_Trainner.class);
+                            Intent intent = new Intent(getApplicationContext(), Insert_User.class);
                             intent.putExtra("email",email1);
                             intent.putExtra("profile_imageUrl", profile_imageUrl);
                             startActivity(intent);
@@ -618,7 +717,8 @@ public class Login extends AppCompatActivity implements GoogleApiClient.OnConnec
                     }
                 }
             }
-
+            progressDialog.dismiss();
+            getWindow().clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
 
         }
     }

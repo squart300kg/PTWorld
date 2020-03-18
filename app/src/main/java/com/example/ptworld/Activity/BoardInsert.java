@@ -18,7 +18,7 @@ import android.widget.TextView;
 import com.example.ptworld.Fragment.FragmentBoardInsert;
 import com.example.ptworld.Fragment.FragmentSNS;
 import com.example.ptworld.R;
-import com.example.ptworld.DTO.TrainnerInfo;
+import com.example.ptworld.DTO.UserInfo;
 
 import java.io.BufferedReader;
 import java.io.ByteArrayOutputStream;
@@ -96,8 +96,8 @@ public class BoardInsert extends AppCompatActivity {
                     }
                     insertBoard.add(i - 1, image);
                 }
-                new Thread_BoardInsert().execute("http://"+IP_ADDRESS+"/user_signup/insertBoard.php", TrainnerInfo.nickname, boardTextStr, insertBoard.get(0), insertBoard.get(1), insertBoard.get(2), insertBoard.get(3), insertBoard.get(4));
-//                new Thread_BoardInsert().execute("http://"+IP_ADDRESS+"/user_signup/insertBoard.php",TrainnerInfo.nickname, boardTextStr);
+                new Thread_BoardInsert().execute("http://"+IP_ADDRESS+"/user_signup/insertBoard.php", UserInfo.nickname, boardTextStr, insertBoard.get(0), insertBoard.get(1), insertBoard.get(2), insertBoard.get(3), insertBoard.get(4));
+//                new Thread_BoardInsert().execute("http://"+IP_ADDRESS+"/user_signup/insertBoard.php",UserInfo.nickname, boardTextStr);
 
                 Log.i("게시물 삽입스레드 직후","실행중");
                 Log.i("게시물Text2",boardTextStr);

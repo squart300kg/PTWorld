@@ -24,10 +24,10 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.ptworld.DTO.UserInfo;
 import com.example.ptworld.R;
 import com.example.ptworld.DTO.ReReplyObject;
 import com.example.ptworld.DTO.ReplyObject;
-import com.example.ptworld.DTO.TrainnerInfo;
 import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
@@ -146,7 +146,7 @@ public class AdapterReply extends RecyclerView.Adapter<AdapterReply.ViewHolder> 
                         if(!sns_reply_writting.equals("")){//댓글입력창에 내용이 있을 경우에만!
                             String rereply_contents = sns_reply_writting.getText().toString();
                             //대댓글을 입력해준다.
-                            new Thread_ReReply(holder).execute("http://"+IP_ADDRESS+"/user_signup/testtest.php", TrainnerInfo.email, TrainnerInfo.nickname, mList.get(position).replyno+"", rereply_contents, mList.get(position).nickname, mList.get(position).boardno, position+"");
+                            new Thread_ReReply(holder).execute("http://"+IP_ADDRESS+"/user_signup/testtest.php", UserInfo.email, UserInfo.nickname, mList.get(position).replyno+"", rereply_contents, mList.get(position).nickname, mList.get(position).boardno, position+"");
                             //대댓글 입력을 완료했으니 키패드를 내린다.
                             hidekeypad(sns_reply_writting);
                             //또한 대댓글 입력창도 지워준다.
@@ -310,7 +310,7 @@ public class AdapterReply extends RecyclerView.Adapter<AdapterReply.ViewHolder> 
             //Notification
             JsonObject notification = new JsonObject();
             notification.addProperty("title", "대댓글");
-            notification.addProperty("body", TrainnerInfo.nickname+"님이 회원님의 게시글에 대댓글을 달았습니다.");
+            notification.addProperty("body", UserInfo.nickname+"님이 회원님의 게시글에 대댓글을 달았습니다.");
             Log.i("댓글노티전송2",notification.get("title")+"");
             Log.i("댓글노티전송2",notification.get("body")+"");
             jsonObj.add("notification", notification);

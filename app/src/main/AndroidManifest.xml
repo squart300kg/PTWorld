@@ -139,7 +139,7 @@
             android:name=".Activity.Popup_SelectSettingProfileImage"
             android:screenOrientation="portrait"
             android:theme="@style/popupTheme" />
-        <activity android:name=".Activity.Insert_Trainner" />
+        <activity android:name=".Activity.Insert_User" />
         <activity
             android:name=".Activity.Popup_InsertUser"
             android:screenOrientation="portrait"

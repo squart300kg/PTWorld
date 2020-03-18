@@ -15,7 +15,7 @@ import android.widget.TextView;
 
 import com.example.ptworld.Adapter.AdapterLikeList;
 import com.example.ptworld.DTO.LikeListDTO;
-import com.example.ptworld.DTO.TrainnerInfo;
+import com.example.ptworld.DTO.UserInfo;
 import com.example.ptworld.R;
 
 import org.json.JSONArray;
@@ -48,11 +48,11 @@ public class FollowerFollowingCount extends AppCompatActivity {
         if(type.equals("followingCount")){
             //팔로잉 수 조회
             followTitle.setText("팔로잉");
-            new Thread_Select_Follow().execute("http://"+IP_ADDRESS+"/user_signup/selectFollow.php","following", TrainnerInfo.email);
+            new Thread_Select_Follow().execute("http://"+IP_ADDRESS+"/user_signup/selectFollow.php","following", UserInfo.email);
         } else if (type.equals("followerCount")){
             //팔로워 수 조회
             followTitle.setText("팔로워");
-            new Thread_Select_Follow().execute("http://"+IP_ADDRESS+"/user_signup/selectFollow.php","follower", TrainnerInfo.email);
+            new Thread_Select_Follow().execute("http://"+IP_ADDRESS+"/user_signup/selectFollow.php","follower", UserInfo.email);
         }
     }
 

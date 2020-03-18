@@ -4,14 +4,15 @@ import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.drawable.ShapeDrawable;
 import android.graphics.drawable.shapes.OvalShape;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 
-import com.example.ptworld.AppRtc.CallActivity;
 import com.example.ptworld.DTO.UserDTO;
+import com.example.ptworld.DTO.UserInfo;
 import com.example.ptworld.Fragment.FragmentBoardInsert;
 import com.example.ptworld.Fragment.FragmentMain;
 import com.example.ptworld.Fragment.FragmentMyPage;
@@ -19,7 +20,6 @@ import com.example.ptworld.Fragment.FragmentNotiHistory;
 import com.example.ptworld.Fragment.FragmentProfile;
 import com.example.ptworld.Fragment.FragmentSNS;
 import com.example.ptworld.R;
-import com.example.ptworld.DTO.TrainnerInfo;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -80,14 +80,7 @@ public class MainDrawer extends AppCompatActivity
         setContentView(R.layout.activity_main_drawer);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-//        FloatingActionButton fab = findViewById(R.id.fab);
-//        fab.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-//                        .setAction("Action", null).show();
-//            }
-//        });
+
         DrawerLayout drawer = findViewById(R.id.drawer_drawer_layout);
         NavigationView navigationView = findViewById(R.id.nav_view);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -149,9 +142,9 @@ public class MainDrawer extends AppCompatActivity
         TextView email = header.findViewById(R.id.mainHeader_email);
         TextView nickname = header.findViewById(R.id.mainHeader_nickname);
 
-        profile_image.setImageBitmap(TrainnerInfo.profile_image);
-        email.setText(TrainnerInfo.email);
-        nickname.setText(TrainnerInfo.nickname);
+        profile_image.setImageBitmap(UserInfo.profile_image);
+        email.setText(UserInfo.email);
+        nickname.setText(UserInfo.nickname);
 
         profile_image.setBackground(new ShapeDrawable(new OvalShape()));
         if(Build.VERSION.SDK_INT >= 21) {
@@ -176,8 +169,8 @@ public class MainDrawer extends AppCompatActivity
                         String IP_ADDRESS = "squart300kg.cafe24.com";
                         Log.i("토큰 길이",token.length()+"");
                         UserDTO.token = token;
-                        UserDTO.email = TrainnerInfo.email;
-                        new Thread_TokenSave().execute("http://"+IP_ADDRESS+"/user_signup/user_token.php", TrainnerInfo.email, token);
+                        UserDTO.email = UserInfo.email;
+                        new Thread_TokenSave().execute("http://"+IP_ADDRESS+"/user_signup/user_token.php", UserInfo.email, token);
                         // Log and toast
 //                        String msg = getString(R.string.msg_token_fmt, token);
 //                        Log.d(TAG, msg);
@@ -367,6 +360,19 @@ public class MainDrawer extends AppCompatActivity
 
         } else if (id == R.id.nav_logout) {
             //카아로 세션을 반납함과 동시에 네아로 세션도 반납시켜준다.
+            //접근토큰을 SharedPreference에 저장
+            SharedPreferences login_token
+                    = getSharedPreferences("login_token", MODE_PRIVATE);
+
+            SharedPreferences.Editor editor = login_token.edit();
+            editor.putString("social_type", "naver");
+            editor.putString("access_token", "");
+            editor.putString("refresh_token", "");
+            editor.putString("expired_at", ""+"");
+            editor.putString("token_type", "");
+            editor.putString("email", "");
+            editor.commit();
+
             UserManagement.getInstance().requestLogout(new LogoutResponseCallback() {
                 @Override
                 public void onCompleteLogout() {
@@ -377,14 +383,27 @@ public class MainDrawer extends AppCompatActivity
                 }
             });
 
-            TrainnerInfo.email = "";
-            TrainnerInfo.password = "";
-            TrainnerInfo.nickname = "";
-            TrainnerInfo.place = "";
-            TrainnerInfo.prize = "";
-            TrainnerInfo.profile_image = null;
+            UserInfo.email = "";
+            UserInfo.password = "";
+            UserInfo.nickname = "";
+            UserInfo.place = "";
+            UserInfo.prize = "";
+            UserInfo.profile_image = null;
         } else if (id == R.id.nav_getout) {
             //탈퇴하면 일단 네이버와 카카오톡을 동시에 탈퇴한다.
+            //접근토큰을 SharedPreference에 저장
+            SharedPreferences login_token
+                    = getSharedPreferences("login_token", MODE_PRIVATE);
+
+            SharedPreferences.Editor editor = login_token.edit();
+            editor.putString("social_type", "naver");
+            editor.putString("access_token", "");
+            editor.putString("refresh_token", "");
+            editor.putString("expired_at", ""+"");
+            editor.putString("token_type", "");
+            editor.putString("email", "");
+            editor.commit();
+
             final String appendMessage = getString(R.string.com_kakao_confirm_unlink);
             new AlertDialog.Builder(this)
                     .setMessage(appendMessage)

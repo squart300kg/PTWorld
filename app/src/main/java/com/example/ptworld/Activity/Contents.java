@@ -11,7 +11,7 @@ import android.webkit.WebViewClient;
 
 import com.example.ptworld.R;
 import com.example.ptworld.Thread.Thread_views;
-import com.example.ptworld.DTO.TrainnerInfo;
+import com.example.ptworld.DTO.UserInfo;
 
 public class Contents extends AppCompatActivity {
     Intent intent;
@@ -39,8 +39,8 @@ public class Contents extends AppCompatActivity {
 
         String IP_ADDRESS = "squart300kg.cafe24.com";
         Thread_views thread_views = new Thread_views();
-        thread_views.execute("http://"+IP_ADDRESS+"/user_signup/views_up.php", TrainnerInfo.email, subject);
-        Log.i("로그데이터 이메일",TrainnerInfo.email);
+        thread_views.execute("http://"+IP_ADDRESS+"/user_signup/views_up.php", UserInfo.email, subject);
+        Log.i("로그데이터 이메일", UserInfo.email);
         Log.i("로그데이터 제목", subject);
 
 

@@ -9,7 +9,6 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.WindowManager;
 
-import com.example.ptworld.Activity.Insert_Trainner;
 import com.example.ptworld.Activity.Login;
 import com.example.ptworld.R;
 import com.kakao.usermgmt.UserManagement;
@@ -28,7 +27,7 @@ public class Popup_SNS extends AppCompatActivity {
         intent = getIntent();
         String email = intent.getExtras().getString("email");
         Log.i("Popup_SNS",email);
-        intent = new Intent(getApplicationContext(), Insert_Trainner.class);
+        intent = new Intent(getApplicationContext(), Insert_User.class);
         intent.putExtra("email", email);
         startActivity(intent);
 

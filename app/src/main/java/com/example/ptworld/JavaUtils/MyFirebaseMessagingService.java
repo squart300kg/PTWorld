@@ -15,7 +15,7 @@ import androidx.core.app.NotificationCompat;
 
 import com.example.ptworld.Activity.MainDrawer;
 import com.example.ptworld.Activity.Message;
-import com.example.ptworld.DTO.TrainnerInfo;
+import com.example.ptworld.DTO.UserInfo;
 import com.example.ptworld.R;
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
@@ -31,7 +31,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
 
     private static final String TAG = "서비스_퐈이어베이스메시지";
     String IP_ADDRESS = "squart300kg.cafe24.com";
-    String targetNickname = TrainnerInfo.nickname;
+    String targetNickname = UserInfo.nickname;
     @Override
     public void onNewToken(String token) {
         Log.d(TAG, "Refreshed token: " + token);

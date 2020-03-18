@@ -20,11 +20,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.WindowManager;
-import android.widget.EditText;
-import android.widget.ImageView;
-import android.widget.TextView;
-
-import com.example.ptworld.Activity.Insert_Trainner;
 import com.example.ptworld.R;
 
 import java.io.ByteArrayOutputStream;
@@ -132,7 +127,7 @@ public class Popup_SelectSettingProfileImage extends AppCompatActivity {
 //
 //                        ImageView profile_image = view.findViewById(R.id.profile_image_trainner);
 //                        profile_image.setImageBitmap(photo);
-                        Insert_Trainner.profile_image.setImageBitmap(photo);
+                        Insert_User.profile_image.setImageBitmap(photo);
                     }
                     File f = new File(mImageCaptureUri.getPath());
                     if(f.exists())

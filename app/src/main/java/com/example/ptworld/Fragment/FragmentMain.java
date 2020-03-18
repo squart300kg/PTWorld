@@ -22,7 +22,7 @@ import com.example.ptworld.Activity.MainRecyclerView2;
 import com.example.ptworld.Activity.MainRecyclerView3;
 import com.example.ptworld.Activity.MainRecyclerView4;
 import com.example.ptworld.R;
-import com.example.ptworld.DTO.TrainnerInfo;
+import com.example.ptworld.DTO.UserInfo;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -175,7 +175,7 @@ public class FragmentMain extends Fragment{
         ViewGroup rootView = (ViewGroup)inflater.inflate(R.layout.activity_main, container, false);
 
         TextView reco_text_name = rootView.findViewById(R.id.reco_text_nickname);
-        reco_text_name.setText(TrainnerInfo.nickname+"님의 맞춤 콘텐츠");
+        reco_text_name.setText(UserInfo.nickname+"님의 맞춤 콘텐츠");
 //        recomendationRecyclerView = rootView.findViewById(R.id.recomendationRecyclerView);
         recyclerView = (RecyclerView)rootView.findViewById(R.id.mainRecyclerView);
         recyclerView_2 = (RecyclerView)rootView.findViewById(R.id.mainRecyclerView_2);

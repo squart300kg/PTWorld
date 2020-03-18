@@ -16,7 +16,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.ptworld.Adapter.AdapterRecomendation;
 import com.example.ptworld.DTO.ItemObject;
 import com.example.ptworld.R;
-import com.example.ptworld.DTO.TrainnerInfo;
+import com.example.ptworld.DTO.UserInfo;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -48,9 +48,9 @@ public class Fragment추천  extends Fragment {
         recyclerView = (RecyclerView)rootView.findViewById(R.id.recomendationRecyclerView);
         context = inflater.getContext();
 //        new MainDescription().execute("http://"+IP_ADDRESS+"/user_signup/allContents.php");
-        new MainDescription().execute("http://"+IP_ADDRESS+"/user_signup/recomend.php", TrainnerInfo.email);
+        new MainDescription().execute("http://"+IP_ADDRESS+"/user_signup/recomend.php", UserInfo.email);
         Log.i("Fragment추천","MainDescription쓰레드 실행");
-        Log.i("Fragment추천 닉네임은(Client)",TrainnerInfo.nickname);
+        Log.i("Fragment추천 닉네임은(Client)", UserInfo.nickname);
         return rootView;
 
     }

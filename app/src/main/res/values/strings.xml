@@ -9,6 +9,11 @@
     <string name="nav_header_desc">Navigation header</string>
     <string name="action_settings">Settings</string>
 
+<!--    네이버 로그인 -->
+    <string name="OAUTH_CLIENT_ID">4Fa9DLWUlQLXJB1BZLuX</string>
+    <string name="OAUTH_CLIENT_SECRET">pi24PFeuzJ</string>
+    <string name="OAUTH_CLIENT_NAME">PTWorld</string>
+
 
     <string name="default_notification_channel_id">Channel ID</string>
     <string name="msg_token_fmt">앱 실행 후, 초기화 토큰값</string>

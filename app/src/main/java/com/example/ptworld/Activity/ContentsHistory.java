@@ -11,8 +11,8 @@ import android.util.Log;
 
 import com.example.ptworld.Adapter.AdapterContentsHistory;
 import com.example.ptworld.DTO.ContentsDTO;
+import com.example.ptworld.DTO.UserInfo;
 import com.example.ptworld.R;
-import com.example.ptworld.DTO.TrainnerInfo;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -37,7 +37,7 @@ public class ContentsHistory extends AppCompatActivity {
 
         contentsHistoryRecyclerView = findViewById(R.id.contentsHistoryRecyclerView);
 
-        new Thread_ContentsHistory().execute("http://"+IP_ADDRESS+"/user_signup/select_contentsHistory.php", TrainnerInfo.email);
+        new Thread_ContentsHistory().execute("http://"+IP_ADDRESS+"/user_signup/select_contentsHistory.php", UserInfo.email);
 
 
     }

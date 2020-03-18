@@ -23,8 +23,8 @@ import com.example.ptworld.Adapter.AdapterSNS;
 
 import com.example.ptworld.Activity.MainDrawer;
 import com.example.ptworld.DTO.BoardObject;
+import com.example.ptworld.DTO.UserInfo;
 import com.example.ptworld.R;
-import com.example.ptworld.DTO.TrainnerInfo;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -75,11 +75,11 @@ public class FragmentSNS extends Fragment {
                 @Override
                 public void onRefresh() {
                     list.clear();
-                    new Thread_SNS().execute("http://"+IP_ADDRESS+"/user_signup/selectBoard.php", TrainnerInfo.email);
+                    new Thread_SNS().execute("http://"+IP_ADDRESS+"/user_signup/selectBoard.php", UserInfo.email);
                     swipelayout.setRefreshing(false);
                 }
             });
-            new Thread_SNS().execute("http://"+IP_ADDRESS+"/user_signup/selectBoard.php", TrainnerInfo.email);
+            new Thread_SNS().execute("http://"+IP_ADDRESS+"/user_signup/selectBoard.php", UserInfo.email);
         }
 
 

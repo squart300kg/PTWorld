@@ -1,13 +1,12 @@
 package com.example.ptworld.Activity;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.view.WindowManager;
 
-import com.example.ptworld.Activity.Insert_Trainner;
+import androidx.appcompat.app.AppCompatActivity;
+
 import com.example.ptworld.R;
 
 public class Popup_InsertUser extends AppCompatActivity {
@@ -20,7 +19,7 @@ public class Popup_InsertUser extends AppCompatActivity {
     }
 
     public void insert_trainner(View view) {
-        Intent intent = new Intent(getApplicationContext(), Insert_Trainner.class);
+        Intent intent = new Intent(getApplicationContext(), Insert_User.class);
         intent.putExtra("email","");
         startActivity(intent);
     }

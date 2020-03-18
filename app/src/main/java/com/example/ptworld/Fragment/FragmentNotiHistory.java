@@ -20,7 +20,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.ptworld.Adapter.AdapterNotiHistoryList;
 import com.example.ptworld.DTO.BoardObject;
-import com.example.ptworld.DTO.TrainnerInfo;
+import com.example.ptworld.DTO.UserInfo;
 import com.example.ptworld.R;
 
 import org.json.JSONArray;
@@ -51,7 +51,7 @@ public class FragmentNotiHistory extends Fragment {
         rootView = (ViewGroup)inflater.inflate(R.layout.activity_notihistory, container, false);
         notiHistoryRecyclerView = rootView.findViewById(R.id.notiHistoryRecyclerView);
 
-        new Thread_NotiHistoryList().execute("http://"+IP_ADDRESS+"/user_signup/selectNotiHistory.php", TrainnerInfo.nickname);
+        new Thread_NotiHistoryList().execute("http://"+IP_ADDRESS+"/user_signup/selectNotiHistory.php", UserInfo.nickname);
         return rootView;
     }
     private class Thread_NotiHistoryList extends AsyncTask<String, Void, String> {

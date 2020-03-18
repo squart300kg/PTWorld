@@ -2,7 +2,7 @@ package com.example.ptworld.DTO;
 
 import android.graphics.Bitmap;
 
-public class TrainnerInfo {
+public class UserInfo {
     public static String email;
     public static String password;
     public static String nickname;

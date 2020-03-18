@@ -21,7 +21,7 @@ import com.example.ptworld.Adapter.AdapterMessage;
 import com.example.ptworld.DTO.ChattingDTO;
 import com.example.ptworld.Fragment.FragmentProfile;
 import com.example.ptworld.R;
-import com.example.ptworld.DTO.TrainnerInfo;
+import com.example.ptworld.DTO.UserInfo;
 import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
@@ -78,7 +78,7 @@ public class Message extends AppCompatActivity implements View.OnClickListener {
     String message;
 
     String toNickname = FragmentProfile.nickname;
-    String myNickname = TrainnerInfo.nickname;
+    String myNickname = UserInfo.nickname;
 
     String device_token;
     String IP_ADDRESS = "squart300kg.cafe24.com";
@@ -106,18 +106,18 @@ public class Message extends AppCompatActivity implements View.OnClickListener {
         
         //이전의 대화 내용들을 불러온다.
 //        getChattingContents();
-         
-    }
 
-    private void getChattingContents() 
-    {
-        Gson gson = new Gson();
-        sharedPreferences = getSharedPreferences("chatting",MODE_PRIVATE);
-        String json = sharedPreferences.getString(toNickname, "");
-        Type type = new TypeToken<ArrayList<ChattingDTO>>() {}.getType();
-        try{
-            Log.i(TAG+"json : ", json);
-            chattingDTOS = gson.fromJson(json, type);
+        }
+
+        private void getChattingContents()
+        {
+            Gson gson = new Gson();
+            sharedPreferences = getSharedPreferences("chatting",MODE_PRIVATE);
+            String json = sharedPreferences.getString(toNickname, "");
+            Type type = new TypeToken<ArrayList<ChattingDTO>>() {}.getType();
+            try{
+                Log.i(TAG+"json : ", json);
+                chattingDTOS = gson.fromJson(json, type);
         }catch (NullPointerException ne){
             chattingDTOS = new ArrayList<>();
         }
@@ -175,11 +175,11 @@ public class Message extends AppCompatActivity implements View.OnClickListener {
                             receiveToNickname = receiveData[3];
                         }catch(ArrayIndexOutOfBoundsException ai){
                             ai.printStackTrace();
-                            receiveToNickname = TrainnerInfo.nickname;
+                            receiveToNickname = UserInfo.nickname;
                         }
 
 
-                        if(!receiveToNickname.equals(TrainnerInfo.nickname)){
+                        if(!receiveToNickname.equals(UserInfo.nickname)){
 //                            //닉네임에 알맞은 디바이스토큰을 반환받는다.
                             new Thread_Return_DeviceToken().execute("http://"+IP_ADDRESS+"/user_signup/return_devicetoken.php", receiveToNickname);
                         }
@@ -194,7 +194,7 @@ public class Message extends AppCompatActivity implements View.OnClickListener {
                     Log.i(TAG,"서버로부터 받은 수신자 : " + receiveToNickname);
 
                     //내가 말한 메시지이다.
-                    if(receiveFromNickname.equals(TrainnerInfo.nickname)){
+                    if(receiveFromNickname.equals(UserInfo.nickname)){
                         new Thread(new Runnable() {
                             @Override
                             public void run() {
@@ -321,7 +321,7 @@ public class Message extends AppCompatActivity implements View.OnClickListener {
             case R.id.message_insert:
                 String message_contents = message_writting.getText().toString();
                 Log.i("작성한 채팅 메시지 내용", message_contents);
-
+//                TextUtils.isEmpty(message_writting.getText())
                 //메시지창이 비어있지 않다면 댓글쓰기를 수행.
                 if(!message_contents.equals("") || message_contents != null){
                     message = message_writting.getText().toString();
@@ -333,11 +333,11 @@ public class Message extends AppCompatActivity implements View.OnClickListener {
                             SimpleDateFormat format1 = new SimpleDateFormat( "HH시mm분");
                             Date time = new Date();
                             String time1 = format1.format(time);
-                            message += ":" + TrainnerInfo.nickname;
+                            message += ":" + UserInfo.nickname;
                             message += ":" + time1;
                             message += ":" + toNickname;
                             //메시지 형식 : 메시지 내용:전송하는사람 닉네임:현재시간:받는사람 닉네임
-                            Log.i(TAG, "서버로 보낼 메시지 : "+message);
+                            Log.i(TAG, "서버로 보낼 메시지 : " + message);
                             out.println(message);                        //서버로 데이터 전송
                             out.flush();
 

@@ -4,7 +4,7 @@ import android.app.ProgressDialog;
 import android.os.AsyncTask;
 import android.util.Log;
 
-import com.example.ptworld.DTO.TrainnerInfo;
+import com.example.ptworld.DTO.UserInfo;
 
 import java.io.BufferedReader;
 import java.io.InputStream;
@@ -37,7 +37,7 @@ public class Thread_views extends AsyncTask<String, Void, String> {
         String email = params[1];
         String subject = params[2];
         String postParameters = "email="+email + "&subject="+subject;
-        Log.i("로그데이터 이메일 스레드", TrainnerInfo.email);
+        Log.i("로그데이터 이메일 스레드", UserInfo.email);
         Log.i("로그데이터 제목 스레드", subject);
         try {
 

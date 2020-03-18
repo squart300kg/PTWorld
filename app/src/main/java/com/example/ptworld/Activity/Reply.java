@@ -22,7 +22,7 @@ import android.widget.TextView;
 import com.example.ptworld.Adapter.AdapterReply;
 import com.example.ptworld.DTO.BoardObject;
 import com.example.ptworld.DTO.ReplyObject;
-import com.example.ptworld.DTO.TrainnerInfo;
+import com.example.ptworld.DTO.UserInfo;
 import com.example.ptworld.R;
 import com.google.gson.Gson;
 import com.google.gson.JsonElement;
@@ -105,7 +105,7 @@ public class Reply extends AppCompatActivity {
 
                 //댓글창이 비어있지 않다면 댓글쓰기를 수행.
                 if(!reply_contents.equals("")){
-                    new Thread_Reply().execute("http://"+IP_ADDRESS+"/user_signup/insert_reply.php", TrainnerInfo.email, TrainnerInfo.nickname, boardno+"", reply_contents, intent.getExtras().getString("nickname"));
+                    new Thread_Reply().execute("http://"+IP_ADDRESS+"/user_signup/insert_reply.php", UserInfo.email, UserInfo.nickname, boardno+"", reply_contents, intent.getExtras().getString("nickname"));
                     sns_reply_writting.setText("");
                     hidekeypad(sns_reply_writting);//키패드를 내린다.
                 }
@@ -142,7 +142,7 @@ public class Reply extends AppCompatActivity {
             //Notification
             JsonObject notification = new JsonObject();
             notification.addProperty("title", "댓글");
-            notification.addProperty("body", TrainnerInfo.nickname+"님이 회원님의 게시글에 댓글을 달았습니다.");
+            notification.addProperty("body", UserInfo.nickname+"님이 회원님의 게시글에 댓글을 달았습니다.");
             Log.i("댓글노티전송2",notification.get("title")+"");
             Log.i("댓글노티전송2",notification.get("body")+"");
             jsonObj.add("notification", notification);

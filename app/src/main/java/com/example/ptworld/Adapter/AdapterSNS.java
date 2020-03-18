@@ -23,7 +23,7 @@ import com.airbnb.lottie.LottieAnimationView;
 import com.example.ptworld.Activity.LikeList;
 import com.example.ptworld.Activity.Reply;
 import com.example.ptworld.DTO.BoardObject;
-import com.example.ptworld.DTO.TrainnerInfo;
+import com.example.ptworld.DTO.UserInfo;
 import com.example.ptworld.Fragment.GoFragmentProfile;
 import com.example.ptworld.R;
 import com.google.gson.Gson;
@@ -199,7 +199,7 @@ public class AdapterSNS extends RecyclerView.Adapter<AdapterSNS.ViewHolder> {
                 String type = "like";
 //                Thread_Like thread_like = new Thread_Like(position);
                 Log.i("좋아요 쓰레드 직전의 no값",mList.get(position).no+"");
-                new Thread_Like(position).execute("http://"+IP_ADDRESS+"/user_signup/like.php", type, mList.get(position).no+"", TrainnerInfo.email, TrainnerInfo.nickname);
+                new Thread_Like(position).execute("http://"+IP_ADDRESS+"/user_signup/like.php", type, mList.get(position).no+"", UserInfo.email, UserInfo.nickname);
 
                 //좋아요 버튼 클릭에 대한 푸쉬메시지를 보내준다.
                 new Thread_Push().execute("https://fcm.googleapis.com/fcm/send",mList.get(position).device_token, mList.get(position).no+"");
@@ -217,7 +217,7 @@ public class AdapterSNS extends RecyclerView.Adapter<AdapterSNS.ViewHolder> {
                 String type = "dislike";
 //                Thread_Like thread_like = new Thread_Like();
                 Log.i("좋아요 쓰레드 직전의 no값",mList.get(position).no+"");
-                new Thread_Like(position).execute("http://"+IP_ADDRESS+"/user_signup/like.php", type, mList.get(position).no+"", TrainnerInfo.email, TrainnerInfo.nickname);
+                new Thread_Like(position).execute("http://"+IP_ADDRESS+"/user_signup/like.php", type, mList.get(position).no+"", UserInfo.email, UserInfo.nickname);
 
             }
         });
@@ -275,7 +275,7 @@ public class AdapterSNS extends RecyclerView.Adapter<AdapterSNS.ViewHolder> {
             //Notification
             JsonObject notification = new JsonObject();
             notification.addProperty("title", "게시물 좋아요");
-            notification.addProperty("body", TrainnerInfo.nickname+"님이 회원님의 게시물을 좋아합니다.");
+            notification.addProperty("body", UserInfo.nickname+"님이 회원님의 게시물을 좋아합니다.");
             Log.i("노티전송2",notification.get("title")+"");
             Log.i("노티전송2",notification.get("body")+"");
             jsonObj.add("notification", notification);

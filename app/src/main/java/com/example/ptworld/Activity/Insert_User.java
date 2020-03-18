@@ -20,8 +20,8 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.example.ptworld.DTO.UserInfo;
 import com.example.ptworld.R;
-import com.example.ptworld.DTO.TrainnerInfo;
 
 import java.io.BufferedReader;
 import java.io.ByteArrayOutputStream;
@@ -34,7 +34,7 @@ import java.net.URLEncoder;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
-public class Insert_Trainner extends AppCompatActivity {
+public class Insert_User extends AppCompatActivity {
 
     private static String TAG = "phptest";
     private static String IP_ADDRESS = "squart300kg.cafe24.com";
@@ -168,53 +168,18 @@ public class Insert_Trainner extends AppCompatActivity {
 
     class InsertData extends AsyncTask<String, Void, String> {
         ProgressDialog progressDialog;
+        String TAG = "Insert_Trainner";
 
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
 
-            progressDialog = ProgressDialog.show(Insert_Trainner.this,
+            progressDialog = ProgressDialog.show(Insert_User.this,
                     "Please Wait", "가입중입니다..", true, true);
         }
 
 
-        @Override
-        protected void onPostExecute(String result) {
-            super.onPostExecute(result);
 
-            progressDialog.dismiss();
-            //이메일이 중복된지 확인한다.
-            //이메일이 중복되지 않는다면 비밀번호와 비밀번호 확인이 일치하는지 확인한다.
-
-
-            if(result.equals("duplicate email")){
-                Log.i("onPostExecute","이메일 중복");
-                Toast.makeText(getApplicationContext(), "이메일이 중복됩니다!", Toast.LENGTH_SHORT).show();
-            }else{
-                if(result.equals("wrong password")){
-                    Log.i("onPostExecute","비밀번호 일치하지 않음");
-                    Toast.makeText(getApplicationContext(), "비밀번호와 비밀번호 확인이 일치하지 않습니다!", Toast.LENGTH_SHORT).show();
-                }else{
-                    finish();
-                    //회원가입을 위해 정보를 다 입력했다면 이제 메인으로 넘겨준다.
-                    TrainnerInfo.email = email.getText().toString();
-                    TrainnerInfo.password = password.getText().toString();
-                    TrainnerInfo.nickname = nickname.getText().toString();
-                    TrainnerInfo.place = place.getText().toString();
-                    TrainnerInfo.prize = prize.getText().toString();
-                    Drawable drawable = profile_image.getDrawable();//이미지뷰에서 이미지를 받아온다.
-                    Bitmap bitmap = ((BitmapDrawable)drawable).getBitmap();//받아온 이미지에서 비트맵을 추출한다.
-                    TrainnerInfo.profile_image = bitmap;
-
-                    startActivity(new Intent(getApplicationContext(), MainDrawer.class));
-
-
-                }
-            }
-
-            Log.d(TAG, "POST response  - " + result);
-            //finish();
-        }
 
 
         @Override
@@ -230,7 +195,7 @@ public class Insert_Trainner extends AppCompatActivity {
 
             String serverURL = params[0];
             String postParameters = "email=" + email + "&password=" + password +"&passwordConfirm=" + passwordConfirm + "&nickname=" + nickname + "&place=" + place + "&prize=" + prize + "&profile_image" + image;
-            Log.i("Insert_Trainner_POST",postParameters);
+            Log.i(TAG + "파라미터 : ",postParameters);
             try {
 
                 URL url = new URL(serverURL);
@@ -284,7 +249,46 @@ public class Insert_Trainner extends AppCompatActivity {
 
                 return new String("Error: " + e.getMessage());
             }
+        }
 
+        @Override
+        protected void onPostExecute(String result) {
+            super.onPostExecute(result);
+            Log.i(TAG+"결과값 : ", result);
+
+            progressDialog.dismiss();
+            //이메일이 중복된지 확인한다.
+            //이메일이 중복되지 않는다면 비밀번호와 비밀번호 확인이 일치하는지 확인한다.
+
+
+            if(result.equals("duplicate email")){
+                Log.i("onPostExecute","이메일 중복");
+                Toast.makeText(getApplicationContext(), "이메일이 중복됩니다!", Toast.LENGTH_SHORT).show();
+            }else{
+                if(result.equals("wrong password")){
+                    Log.i("onPostExecute","비밀번호 일치하지 않음");
+                    Toast.makeText(getApplicationContext(), "비밀번호와 비밀번호 확인이 일치하지 않습니다!", Toast.LENGTH_SHORT).show();
+                }else{
+                    Log.i(TAG, "회원가입 성공!");
+                    finish();
+                    //회원가입을 위해 정보를 다 입력했다면 이제 메인으로 넘겨준다.
+                    UserInfo.email = email.getText().toString();
+                    UserInfo.password = password.getText().toString();
+                    UserInfo.nickname = nickname.getText().toString();
+                    UserInfo.place = place.getText().toString();
+                    UserInfo.prize = prize.getText().toString();
+                    Drawable drawable = profile_image.getDrawable();//이미지뷰에서 이미지를 받아온다.
+                    Bitmap bitmap = ((BitmapDrawable)drawable).getBitmap();//받아온 이미지에서 비트맵을 추출한다.
+                    UserInfo.profile_image = bitmap;
+
+                    startActivity(new Intent(getApplicationContext(), MainDrawer.class));
+
+
+                }
+            }
+
+            Log.d(TAG, "POST response  - " + result);
+            //finish();
         }
     }
 

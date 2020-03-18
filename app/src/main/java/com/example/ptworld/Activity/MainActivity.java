@@ -18,8 +18,8 @@ import android.view.View;
 import android.view.MenuItem;
 
 import com.example.ptworld.DTO.ItemObject;
+import com.example.ptworld.DTO.UserInfo;
 import com.example.ptworld.R;
-import com.example.ptworld.DTO.TrainnerInfo;
 import com.google.android.material.navigation.NavigationView;
 import com.kakao.network.ErrorResult;
 import com.kakao.usermgmt.UserManagement;
@@ -92,18 +92,18 @@ public class MainActivity extends AppCompatActivity
 //        profile_image = findViewById(R.id.imageView);
 //        email = findViewById(R.id.textView);
 
-        Log.i("Main_Image", TrainnerInfo.profile_image+"");
-        Log.i("Main_email",TrainnerInfo.email);
-        Log.i("Main_nickname",TrainnerInfo.nickname);
+        Log.i("Main_Image", UserInfo.profile_image+"");
+        Log.i("Main_email", UserInfo.email);
+        Log.i("Main_nickname", UserInfo.nickname);
 
 //        View header = navigationView.getHeaderView(0);
 //        ImageView profile_image = header.findViewById(R.id.mainHeader_ProfileImage);
 //        TextView email = header.findViewById(R.id.mainHeader_email);
 //        TextView nickname = header.findViewById(R.id.mainHeader_nickname);
 
-//        profile_image.setImageBitmap(TrainnerInfo.profile_image);
-//        email.setText(TrainnerInfo.email);
-//        nickname.setText(TrainnerInfo.nickname);
+//        profile_image.setImageBitmap(UserInfo.profile_image);
+//        email.setText(UserInfo.email);
+//        nickname.setText(UserInfo.nickname);
 //
 //        profile_image.setBackground(new ShapeDrawable(new OvalShape()));
 //        if(Build.VERSION.SDK_INT >= 21) {
@@ -414,12 +414,12 @@ public class MainActivity extends AppCompatActivity
                 }
             });
 
-            TrainnerInfo.email = "";
-            TrainnerInfo.password = "";
-            TrainnerInfo.nickname = "";
-            TrainnerInfo.place = "";
-            TrainnerInfo.prize = "";
-            TrainnerInfo.profile_image = null;
+            UserInfo.email = "";
+            UserInfo.password = "";
+            UserInfo.nickname = "";
+            UserInfo.place = "";
+            UserInfo.prize = "";
+            UserInfo.profile_image = null;
         }else if (id == R.id.nav_getout){
             //=======================카카오톡 탈퇴==========================
             //토큰을 다시 갱신받기 위해서 PTWorld앱과 카카오톡 연결을 해제하는 코드이다.
