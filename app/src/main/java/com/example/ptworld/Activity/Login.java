@@ -142,20 +142,16 @@ public class Login extends AppCompatActivity implements GoogleApiClient.OnConnec
 
         SharedPreferences login_token =
                 getSharedPreferences("login_token", MODE_PRIVATE);
-        SharedPreferences.Editor editor = login_token.edit();
 
         if(!login_token.getString("email", "").equals("") &&
                 login_token.getString("social_type", "").equals("google")){
             Thread_LoginSuccess thread_loginSuccess = new Thread_LoginSuccess();
             thread_loginSuccess.execute("http://"+IP_ADDRESS+"/user_signup/login_success.php", acct.getEmail());
-
         }
         else
         {
 
         }
-
-
     }
 
     //TODO :: 네이버 로그인
@@ -273,7 +269,6 @@ public class Login extends AppCompatActivity implements GoogleApiClient.OnConnec
     public void onConnectionFailed(@NonNull ConnectionResult connectionResult) { }
 
     private void handleSignInResult(Task<GoogleSignInAccount> completedTask) {
-
         GoogleSignInAccount acct = null;
         try {
             acct = completedTask.getResult(ApiException.class);
@@ -652,6 +647,7 @@ public class Login extends AppCompatActivity implements GoogleApiClient.OnConnec
             progressDialog = new ProgressDialog(Login.this);
             progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
             progressDialog.setMessage("잠시 기다려 주세요.");
+            progressDialog.setCancelable(false);
             progressDialog.show();
 
             getWindow().setFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE,

@@ -155,32 +155,25 @@ public class MainDrawer extends AppCompatActivity
 //        Crawling_Thread crawling_thread = new Crawling_Thread();
 //        crawling_thread.execute();
         FirebaseInstanceId.getInstance().getInstanceId()
-                .addOnCompleteListener(new OnCompleteListener<InstanceIdResult>() {
-                    @Override
-                    public void onComplete(@NonNull Task<InstanceIdResult> task) {
-                        if (!task.isSuccessful()) {
-                            Log.w("FCM토큰 초기화", "getInstanceId failed", task.getException());
-                            return;
-                        }
-
-                        //새로운 토큰을 받았다.
-                        String token = task.getResult().getToken();
-                        Log.i("FCM NEW토큰",token);
-                        String IP_ADDRESS = "squart300kg.cafe24.com";
-                        Log.i("토큰 길이",token.length()+"");
-                        UserDTO.token = token;
-                        UserDTO.email = UserInfo.email;
-                        new Thread_TokenSave().execute("http://"+IP_ADDRESS+"/user_signup/user_token.php", UserInfo.email, token);
-                        // Log and toast
-//                        String msg = getString(R.string.msg_token_fmt, token);
-//                        Log.d(TAG, msg);
-//                        Toast.makeText(MainActivity.this, msg, Toast.LENGTH_SHORT).show();
+                .addOnCompleteListener(task -> {
+                    if (!task.isSuccessful()) {
+                        Log.w("FCM토큰 초기화", "getInstanceId failed", task.getException());
+                        return;
                     }
+
+                    //새로운 토큰을 받았다.
+                    String token = task.getResult().getToken();
+                    Log.i("FCM NEW토큰",token);
+                    String IP_ADDRESS = "squart300kg.cafe24.com";
+                    Log.i("토큰 길이",token.length()+"");
+                    UserDTO.token = token;
+                    UserDTO.email = UserInfo.email;
+                    new Thread_TokenSave().execute("http://"+IP_ADDRESS+"/user_signup/user_token.php", UserInfo.email, token);
+
                 });
 
-
-
     }
+
     private class Thread_TokenSave extends AsyncTask<String, Void, String>  {
 
         //진행바표시
@@ -345,11 +338,15 @@ public class MainDrawer extends AppCompatActivity
 
         if (id == R.id.go_BraodCast) {
 //            startActivity(new Intent(MainDrawer.this, CallActivity.class));
+            startActivity(new Intent(this, UserListActivity.class));
+            Toast.makeText(MainDrawer.this, "영상통화하기 클릭", Toast.LENGTH_SHORT).show();
+        } else if (id == R.id.go_BroadCast) {
+            startActivity(new Intent(MainDrawer.this, GoBroadCast.class));
             Toast.makeText(MainDrawer.this, "방송하기 클릭", Toast.LENGTH_SHORT).show();
+        } else if (id == R.id.see_ReBroadCast) {
+            Toast.makeText(MainDrawer.this, "방송다시보기 클릭", Toast.LENGTH_SHORT).show();
         } else if (id == R.id.see_BroadCast) {
-            startActivity(new Intent(MainDrawer.this, ConnectActivity.class));
-        } else if (id == R.id.nav_slideshow) {
-
+            Toast.makeText(MainDrawer.this, "방송보기 클릭", Toast.LENGTH_SHORT).show();
         } else if (id == R.id.nav_tools) {
 
         } else if (id == R.id.nav_share) {

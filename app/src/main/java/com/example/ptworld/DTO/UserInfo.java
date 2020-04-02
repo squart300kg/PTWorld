@@ -9,6 +9,24 @@ public class UserInfo {
     public static String prize;
     public static String place;
     public static Bitmap profile_image;
+    public static String profile_image_str;
+
+    public static String getProfile_image_str() {
+        return profile_image_str;
+    }
+
+    public static void setProfile_image_str(String profile_image_str) {
+        UserInfo.profile_image_str = profile_image_str;
+    }
+
+
+    public static Bitmap getProfile_image() {
+        return profile_image;
+    }
+
+    public static void setProfile_image(Bitmap profile_image) {
+        UserInfo.profile_image = profile_image;
+    }
 
     public String getEmail() {
         return email;

@@ -7,15 +7,19 @@
         <item
             android:id="@+id/go_BraodCast"
             android:icon="@drawable/ic_menu_camera"
+            android:title="영상통화하기" />
+        <item
+            android:id="@+id/go_BroadCast"
+            android:icon="@drawable/ic_menu_gallery"
             android:title="방송하기" />
         <item
-            android:id="@+id/see_BroadCast"
-            android:icon="@drawable/ic_menu_gallery"
-            android:title="방송보기" />
+            android:id="@+id/see_ReBroadCast"
+            android:icon="@drawable/ic_menu_camera"
+            android:title="방송 다시보기"/>
         <item
-            android:id="@+id/nav_slideshow"
+            android:id="@+id/see_BroadCast"
             android:icon="@drawable/ic_menu_slideshow"
-            android:title="@string/menu_slideshow" />
+            android:title="방송보기" />
         <item
             android:id="@+id/nav_tools"
             android:icon="@drawable/ic_menu_manage"
