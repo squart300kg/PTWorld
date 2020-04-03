@@ -390,11 +390,11 @@ public class MainActivity extends AppCompatActivity
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 
-        if (id == R.id.go_BraodCast) {
+        if (id == R.id.nav_tools) {
             // Handle the camera action
         } else if (id == R.id.see_BroadCast) {
 
-        } else if (id == R.id.nav_slideshow) {
+        } else if (id == R.id.nav_tools) {
 
         } else if (id == R.id.nav_tools) {
 

@@ -336,7 +336,7 @@ public class MainDrawer extends AppCompatActivity
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 
-        if (id == R.id.go_BraodCast) {
+        if (id == R.id.go_VideoCurrency) {
 //            startActivity(new Intent(MainDrawer.this, CallActivity.class));
             startActivity(new Intent(this, UserListActivity.class));
             Toast.makeText(MainDrawer.this, "영상통화하기 클릭", Toast.LENGTH_SHORT).show();

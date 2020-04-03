@@ -257,6 +257,45 @@
     <string name="pref_enable_rtceventlog_key">enable_rtceventlog_key</string>
     <string name="pref_enable_rtceventlog_title">Enable RtcEventLog.</string>
     <string name="pref_enable_rtceventlog_default">false</string>
+    <string name="switch_camera_button">카메라 전환</string>
+    <string name="start_button">스트리밍 시작</string>
+    <string name="start_record">녹화시작</string>
+
+    <string name="start_publishing">Start Publishing</string>
+    <string name="stop_publishing">Stop Publishing</string>
+    <string name="started_publishing">Publishing Started</string>
+    <string name="stopped_publishing">Publishing Stopped</string>
+    <string name="disconnected_publishing">Publishing Disconnected</string>
+    <string name="failed_publishing">Failed To Connect</string>
+
+    <string name="error_empty_url">url is empty</string>
+
+    <string name="publishing_label">LIVE  %1$s:%2$s</string>
+    <string name="protocols">Protocol</string>
+    <string name="tcp">TCP</string>
+    <string name="video">Video</string>
+    <string name="resolution">Resolution</string>
+    <string name="video_bitrate">2500</string>
+    <string name="fps">FPS</string>
+    <string name="hardware_rotation">false</string>
+    <string name="audio">Audio</string>
+    <string name="samplerate">SampleRate</string>
+    <string name="channel">Channel</string>
+    <string name="echo_canceler">Echo canceler</string>
+    <string name="noise_suppressor">Noise uppressor</string>
+    <string name="wowza_auth">Wowza Auth</string>
+    <string name="wowza_user">squart300kg</string>
+    <string name="wowza_password">squart1126</string>
+    <string name="hint_rtmp">제목을 입력해 주세요</string>
+    <string name="rtsp_streamer">Custom RTSP</string>
+    <string name="microphone">Microphone</string>
+    <string name="camera">Camera</string>
+    <string name="stop_record">Stop record</string>
+    <string name="stop_button">스트리밍 종료</string>
+    <string name="FPS">30</string>
+    <string name="rtmp_url">rtmp://172.30.1.32:1935/orange/</string>
+    <string name="audio_bitrate">128</string>
+    <string name="sample_rate">44100</string>
 
 
 </resources>

@@ -5,7 +5,7 @@
 
     <group android:checkableBehavior="single">
         <item
-            android:id="@+id/go_BraodCast"
+            android:id="@+id/go_VideoCurrency"
             android:icon="@drawable/ic_menu_camera"
             android:title="영상통화하기" />
         <item
