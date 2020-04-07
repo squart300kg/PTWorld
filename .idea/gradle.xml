@@ -12,6 +12,7 @@
           <set>
             <option value="$PROJECT_DIR$" />
             <option value="$PROJECT_DIR$/app" />
+            <option value="$PROJECT_DIR$/app_ffmpeg_native" />
             <option value="$PROJECT_DIR$/rtmp" />
           </set>
         </option>

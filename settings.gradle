@@ -1,2 +1,3 @@
 include ':app'
 include ':rtmp'
+include ':app_ffmpeg_native'

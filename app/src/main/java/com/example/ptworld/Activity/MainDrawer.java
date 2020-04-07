@@ -74,12 +74,19 @@ public class MainDrawer extends AppCompatActivity
     private com.example.ptworld.Fragment.FragmentProfile FragmentProfile = new FragmentProfile(MainDrawer.this);
     private com.example.ptworld.Fragment.FragmentMyPage FragmentMyPage = new FragmentMyPage();
 
+    static
+    {
+        System.loadLibrary("native-lib");
+    }
+    public native  String stringFromJNI();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_drawer);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
+        Toast.makeText(this, stringFromJNI(), Toast.LENGTH_SHORT).show();
 
         DrawerLayout drawer = findViewById(R.id.drawer_drawer_layout);
         NavigationView navigationView = findViewById(R.id.nav_view);
@@ -89,18 +96,69 @@ public class MainDrawer extends AppCompatActivity
         toggle.syncState();
         navigationView.setNavigationItemSelectedListener(this);
 
+
+
+        notification();
+
+
+        BottomNavigationView navView = findViewById(R.id.nav_view_bottom);
+        navView.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
+
+        View header = navigationView.getHeaderView(0);
+        ImageView profile_image = header.findViewById(R.id.mainHeader_profileImage);
+        TextView email = header.findViewById(R.id.mainHeader_email);
+        TextView nickname = header.findViewById(R.id.mainHeader_nickname);
+
+        profile_image.setImageBitmap(UserInfo.profile_image);
+        email.setText(UserInfo.email);
+        nickname.setText(UserInfo.nickname);
+
+        profile_image.setBackground(new ShapeDrawable(new OvalShape()));
+        if(Build.VERSION.SDK_INT >= 21) {
+            profile_image.setClipToOutline(true);
+        }
+
+        //크롤링을 하기 위한 임시 메서드이다. 한번 실행하고 반드시 지워준다.
+//        Crawling_Thread crawling_thread = new Crawling_Thread();
+//        crawling_thread.execute();
+
+        firebaseTokenInit();
+
+
+    }
+
+    private void firebaseTokenInit() {
+        FirebaseInstanceId.getInstance().getInstanceId()
+                .addOnCompleteListener(task -> {
+                    if (!task.isSuccessful()) {
+                        Log.w("FCM토큰 초기화", "getInstanceId failed", task.getException());
+                        return;
+                    }
+
+                    //새로운 토큰을 받았다.
+                    String token = task.getResult().getToken();
+                    Log.i("FCM NEW토큰",token);
+                    String IP_ADDRESS = "squart300kg.cafe24.com";
+                    Log.i("토큰 길이",token.length()+"");
+                    UserDTO.token = token;
+                    UserDTO.email = UserInfo.email;
+                    new Thread_TokenSave().execute("http://"+IP_ADDRESS+"/user_signup/user_token.php", UserInfo.email, token);
+
+                });
+    }
+
+    private void notification() {
         //하단 메뉴바에 대한 코드를 작성한다.
         FragmentTransaction transaction = fragmentManager.beginTransaction();
 
         String str = getIntent().getStringExtra("notification");
-
         if(str != null){
             //노티 - 좋아요
             if(str.equals("notification_Like")){
                 String boardno = getIntent().getStringExtra("boardno");
                 FragmentSNS.boardno = boardno;
                 transaction.replace(R.id.frameLayout, FragmentSNS).commitAllowingStateLoss();
-            //노티 - 팔로우
+                //노티 - 팔로우
             } else if(str.equals("notification_UserProfile")){
                 String nickname2 = getIntent().getStringExtra("nickname");
                 FragmentProfile.nickname = nickname2;
@@ -133,45 +191,6 @@ public class MainDrawer extends AppCompatActivity
             //정상 실행시켜 들어온 경우
             transaction.replace(R.id.frameLayout, FragmentMain).commitAllowingStateLoss();
         }
-
-        BottomNavigationView navView = findViewById(R.id.nav_view_bottom);
-        navView.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
-
-        View header = navigationView.getHeaderView(0);
-        ImageView profile_image = header.findViewById(R.id.mainHeader_profileImage);
-        TextView email = header.findViewById(R.id.mainHeader_email);
-        TextView nickname = header.findViewById(R.id.mainHeader_nickname);
-
-        profile_image.setImageBitmap(UserInfo.profile_image);
-        email.setText(UserInfo.email);
-        nickname.setText(UserInfo.nickname);
-
-        profile_image.setBackground(new ShapeDrawable(new OvalShape()));
-        if(Build.VERSION.SDK_INT >= 21) {
-            profile_image.setClipToOutline(true);
-        }
-
-        //크롤링을 하기 위한 임시 메서드이다. 한번 실행하고 반드시 지워준다.
-//        Crawling_Thread crawling_thread = new Crawling_Thread();
-//        crawling_thread.execute();
-        FirebaseInstanceId.getInstance().getInstanceId()
-                .addOnCompleteListener(task -> {
-                    if (!task.isSuccessful()) {
-                        Log.w("FCM토큰 초기화", "getInstanceId failed", task.getException());
-                        return;
-                    }
-
-                    //새로운 토큰을 받았다.
-                    String token = task.getResult().getToken();
-                    Log.i("FCM NEW토큰",token);
-                    String IP_ADDRESS = "squart300kg.cafe24.com";
-                    Log.i("토큰 길이",token.length()+"");
-                    UserDTO.token = token;
-                    UserDTO.email = UserInfo.email;
-                    new Thread_TokenSave().execute("http://"+IP_ADDRESS+"/user_signup/user_token.php", UserInfo.email, token);
-
-                });
-
     }
 
     private class Thread_TokenSave extends AsyncTask<String, Void, String>  {
@@ -346,6 +365,7 @@ public class MainDrawer extends AppCompatActivity
         } else if (id == R.id.see_ReBroadCast) {
             Toast.makeText(MainDrawer.this, "방송다시보기 클릭", Toast.LENGTH_SHORT).show();
         } else if (id == R.id.see_BroadCast) {
+            startActivity(new Intent(this, BroadCastListActivity.class));
             Toast.makeText(MainDrawer.this, "방송보기 클릭", Toast.LENGTH_SHORT).show();
         } else if (id == R.id.nav_tools) {
 

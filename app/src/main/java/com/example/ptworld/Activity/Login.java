@@ -130,15 +130,15 @@ public class Login extends AppCompatActivity implements GoogleApiClient.OnConnec
     }
 
     private void updateUI(GoogleSignInAccount acct) {
-        Log.i("구아로0", "email:" + acct.getEmail());
-        Log.i("구아로0", "id:" + acct.getId());
-        Log.i("구아로0", "profile:" + acct.getPhotoUrl());
-        Log.i("구아로0", "DispName > " + acct.getDisplayName());
-        Log.i("구아로0", "getFamilyName > " + acct.getFamilyName());
-        Log.i("구아로0", "getGivenName > " + acct.getGivenName());
-        Log.i("구아로0", "getId > " + acct.getId());
-        Log.i("구아로0", "getIdToken > " + acct.getIdToken());
-        Log.i("구아로0", "getServerAuthCode > " + acct.getServerAuthCode());
+//        Log.i("구아로0", "email:" + acct.getEmail());
+//        Log.i("구아로0", "id:" + acct.getId());
+//        Log.i("구아로0", "profile:" + acct.getPhotoUrl());
+//        Log.i("구아로0", "DispName > " + acct.getDisplayName());
+//        Log.i("구아로0", "getFamilyName > " + acct.getFamilyName());
+//        Log.i("구아로0", "getGivenName > " + acct.getGivenName());
+//        Log.i("구아로0", "getId > " + acct.getId());
+//        Log.i("구아로0", "getIdToken > " + acct.getIdToken());
+//        Log.i("구아로0", "getServerAuthCode > " + acct.getServerAuthCode());
 
         SharedPreferences login_token =
                 getSharedPreferences("login_token", MODE_PRIVATE);
@@ -277,10 +277,10 @@ public class Login extends AppCompatActivity implements GoogleApiClient.OnConnec
         }
 
         Toast.makeText(Login.this, "구글 로그인 성공", Toast.LENGTH_SHORT).show();
-        Log.i("구아로", "email:" + acct.getEmail());
-        Log.i("구아로", "id:" + acct.getId());
-        Log.i("구아로", "profile:" + acct.getPhotoUrl());
-        Log.i("구아로", "DispName > " + acct.getDisplayName());
+//        Log.i("구아로", "email:" + acct.getEmail());
+//        Log.i("구아로", "id:" + acct.getId());
+//        Log.i("구아로", "profile:" + acct.getPhotoUrl());
+//        Log.i("구아로", "DispName > " + acct.getDisplayName());
 
         SharedPreferences login_token =
                 getSharedPreferences("login_token", MODE_PRIVATE);
