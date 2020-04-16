@@ -5,31 +5,29 @@
 
     <uses-permission android:name="android.permission.FLASHLIGHT" />
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.CHANGE_NETWORK_STATE" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.RECORD_AUDIO" />
+    <uses-permission android:name="android.permission.MODIFY_AUDIO_SETTINGS" />
     <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
-
+    <uses-permission android:name="android.permission.BLUETOOTH" />
+    <uses-permission
+        android:name="android.permission.CAPTURE_VIDEO_OUTPUT"
+        tools:ignore="ProtectedPermissions" />
     <uses-feature
         android:name="android.hardware.camera"
-        android:required="false" />
+        android:required="true" />
     <uses-feature
         android:name="android.hardware.camera.autofocus"
-        android:required="false" />
+        android:required="true" />
     <uses-feature
         android:glEsVersion="0x00020000"
         android:required="true" />
 
-    <uses-permission android:name="android.permission.CAMERA" />
-    <uses-permission android:name="android.permission.CHANGE_NETWORK_STATE" />
-    <uses-permission android:name="android.permission.MODIFY_AUDIO_SETTINGS" />
-    <uses-permission android:name="android.permission.RECORD_AUDIO" />
-    <uses-permission android:name="android.permission.BLUETOOTH" />
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-    <uses-permission
-        android:name="android.permission.CAPTURE_VIDEO_OUTPUT"
-        tools:ignore="ProtectedPermissions" />
+
 
     <application
         android:name=".JavaUtils.GlobalApplication"
@@ -40,17 +38,9 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
-        <activity android:name=".Activity.BroadCastListActivity"></activity>
+        <activity android:name=".Activity.SeeingBroadCastActivity"></activity>
+        <activity android:name=".Activity.BroadCastListActivity" />
         <activity android:name=".Activity.GoBroadCast" />
-        <activity android:name=".Activity.MediaActivity" />
-        <activity android:name=".Activity.MediaPlayerActivity" />
-
-        <service android:name=".JavaUtils.MediaPlaybackService">
-            <intent-filter>
-                <action android:name="android.media.browse.MediaBrowserService" />
-            </intent-filter>
-        </service>
-
         <activity android:name=".Activity.UserListActivity" />
         <activity
             android:name=".Activity.ConnectActivity"

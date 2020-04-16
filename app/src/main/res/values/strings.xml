@@ -293,9 +293,10 @@
     <string name="stop_record">Stop record</string>
     <string name="stop_button">스트리밍 종료</string>
     <string name="FPS">30</string>
-    <string name="rtmp_url">rtmp://172.30.44.192:1935/orange/</string>
     <string name="audio_bitrate">128</string>
     <string name="sample_rate">44100</string>
-
+    <string name="rtmp_url">rtmp://192.168.0.10:1935/orange/</string>
+    <string name="ffmpeg_server_url">http://192.168.0.10/FFmpeg/ffmpeg.php</string>
+    <string name="thumbnail_url">http://192.168.0.10/thumbnail</string>
 
 </resources>

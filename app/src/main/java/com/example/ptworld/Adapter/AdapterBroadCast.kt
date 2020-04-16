@@ -2,6 +2,7 @@ package com.example.ptworld.Adapter
 
 import android.app.Activity
 import android.content.Context
+import android.content.Intent
 import android.graphics.Bitmap
 import android.media.MediaMetadataRetriever
 import android.media.ThumbnailUtils
@@ -15,7 +16,10 @@ import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
 import android.widget.VideoView
+import androidx.core.content.ContextCompat.startActivity
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
+import com.example.ptworld.Activity.SeeingBroadCastActivity
 import com.example.ptworld.DTO.BroadCast
 import com.example.ptworld.DTO.Users
 import com.example.ptworld.R
@@ -28,11 +32,13 @@ import java.util.*
 class AdapterBroadCast(var list: ArrayList<BroadCast>, var mContext: Activity) : RecyclerView.Adapter<AdapterBroadCast.ViewHolder>() {
 
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        var broad_cast_item: ImageView
-
+        var broad_cast_thumbnail: ImageView
+        var broad_cast_title : TextView
+        var broad_cast_frame : LinearLayout
         init {
-            broad_cast_item = itemView.findViewById(R.id.broad_cast_item)
-
+            broad_cast_thumbnail = itemView.findViewById(R.id.broad_cast_thumbnail)
+            broad_cast_title = itemView.findViewById(R.id.broad_cast_title)
+            broad_cast_frame = itemView.findViewById(R.id.broad_cast_frame)
         }
     }
 
@@ -44,12 +50,21 @@ class AdapterBroadCast(var list: ArrayList<BroadCast>, var mContext: Activity) :
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
 
 //        var thumbnail = getWebVideoThumbnail(mContext, Uri.parse(list[position].url))
-        var thumbnail = ThumbnailUtils.createVideoThumbnail(
-                list[position].url,
-                MediaStore.Video.Thumbnails.MICRO_KIND)
-        holder.broad_cast_item.setImageBitmap(thumbnail)
-        Log.i("broad_cast_thumbnail_result : ", thumbnail.toString())
+//        Log.i("rtmp_url", list[position].url)
+//        var thumbnail = ThumbnailUtils.createVideoThumbnail(
+//                list[position].url,
+//                MediaStore.Video.Thumbnails.MICRO_KIND)
+//        holder.broad_cast_item.setImageBitmap(thumbnail)
+//        Log.i("broad_cast_thumbnail_result : ", thumbnail.toString())
 
+        Glide.with(mContext).load(list[position].thumbnail_url).into(holder.broad_cast_thumbnail)
+        holder.broad_cast_title.text = list[position].title
+        holder.broad_cast_frame.setOnClickListener {
+            var intent = Intent(mContext, SeeingBroadCastActivity::class.java)
+            intent.putExtra("title", list[position].title)
+            intent.putExtra("streaming_url", list[position].streaming_url)
+            mContext.startActivity(intent)
+        }
 //        holder.broad_cast_item.setImageBitmap(thumbnail)
 //        holder.profile_image.setImageBitmap(list[position].profile_image)
 //        holder.nickname.text = list[position].nickname
@@ -62,11 +77,11 @@ class AdapterBroadCast(var list: ArrayList<BroadCast>, var mContext: Activity) :
     }
 
     private fun getWebVideoThumbnail(context : Context, uri : Uri) : Bitmap? {
-        var retriever : MediaMetadataRetriever = MediaMetadataRetriever()
+        var retriever = MediaMetadataRetriever()
         try{
             Log.i("getWebVideoThumbnail_uri", uri.toString())
             retriever.setDataSource(uri.toString(), HashMap<String, String>())
-            return retriever.getFrameAtTime(1000, MediaMetadataRetriever.OPTION_CLOSEST)
+            return retriever.getFrameAtTime(1000)
         }catch( e : IllegalArgumentException){
             e.printStackTrace()
         }catch( e : RuntimeException){

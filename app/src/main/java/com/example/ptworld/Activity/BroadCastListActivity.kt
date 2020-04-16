@@ -109,9 +109,11 @@ class BroadCastListActivity : AppCompatActivity() {
 //                    val itemObject = ItemObject(jsonObject.getString("subject"), jsonObject.getString("contents_url"), jsonObject.getString("thumbnail_url"))
                     Log.i("broad_cast_list_result : ", jsonObject.getString("title"))
                     Log.i("broad_cast_list_result : ", jsonObject.getString("streaming_url"))
+                    Log.i("broad_cast_list_result : ", jsonObject.getString("thumbnail_url"))
                     broadCast = BroadCast(
                             jsonObject.getString("title"),
-                            jsonObject.getString("streaming_url")
+                            jsonObject.getString("streaming_url"),
+                            jsonObject.getString("thumbnail_url")
                     )
                     list.add(broadCast)
                 }

@@ -1,33 +1,33 @@
 package com.example.ptworld.Activity
 
-import android.app.ProgressDialog
 import android.hardware.Camera
 import android.os.*
 import android.util.Log
+import android.view.MotionEvent
+import android.view.SurfaceHolder
 import android.view.View
 import android.view.WindowManager
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
-import com.example.ptworld.Adapter.AdapterMain
-import com.example.ptworld.DTO.ItemObject
 import com.example.ptworld.R
 import com.pedro.encoder.input.video.CameraHelper
 import com.pedro.encoder.input.video.CameraOpenException
 import com.pedro.rtplibrary.rtmp.RtmpCamera1
 import kotlinx.android.synthetic.main.activity_go_broad_cast.*
 import net.ossrs.rtmp.ConnectCheckerRtmp
-import org.json.JSONArray
-import org.json.JSONException
 import java.io.*
 import java.net.HttpURLConnection
 import java.net.URL
-import java.security.MessageDigest
 import java.text.SimpleDateFormat
 import java.util.*
 
-class GoBroadCast : AppCompatActivity(), ConnectCheckerRtmp, View.OnClickListener {
+
+class GoBroadCast :
+        AppCompatActivity(),
+        ConnectCheckerRtmp,
+        View.OnClickListener,
+        SurfaceHolder.Callback,
+        View.OnTouchListener{
 
     lateinit var rtmpCamera1: RtmpCamera1
     var currentDateAndTime = ""
@@ -48,11 +48,20 @@ class GoBroadCast : AppCompatActivity(), ConnectCheckerRtmp, View.OnClickListene
         supportActionBar!!.setHomeButtonEnabled(true)
 
         rtmpCamera1 = RtmpCamera1(surfaceView, this)
-
+        prepareEncoders()
         b_start_stop.setOnClickListener(this)
         b_record.setOnClickListener(this)
         switch_camera.setOnClickListener(this)
+        surfaceView.holder.addCallback(this)
+        surfaceView.setOnTouchListener(this)
+
     }
+
+    override fun onResume() {
+        super.onResume()
+        Log.i("BroadCast", "onResume들어옴")
+    }
+
 
 
     override fun onAuthSuccessRtmp() {
@@ -78,12 +87,21 @@ class GoBroadCast : AppCompatActivity(), ConnectCheckerRtmp, View.OnClickListene
             live_timer.text = getString(R.string.publishing_label, 0L.format(), 0L.format())
         }
 
+
         ThreadStreamingStartStop().execute(
                 getString(R.string.server_url) + "streamingStartStop.php",
                 "start",
                 rtmp_title.text.toString(),
                 getString(R.string.rtmp_url),
-                stream_key.toString())
+                stream_key.toString(),
+                getString(R.string.thumbnail_url))
+
+        ThreadExtractThumbnail().execute(
+                getString(R.string.ffmpeg_server_url),
+                getString(R.string.rtmp_url),
+                stream_key.toString(),
+                rtmp_title.text.toString()
+        )
 
         val startedAt = System.currentTimeMillis()
         var updatedAt = System.currentTimeMillis()
@@ -114,7 +132,8 @@ class GoBroadCast : AppCompatActivity(), ConnectCheckerRtmp, View.OnClickListene
                 "stop",
                 rtmp_title.text.toString(),
                 getString(R.string.rtmp_url),
-                stream_key.toString())
+                stream_key.toString(),
+                getString(R.string.thumbnail_url))
 
     }
     private fun Long.format(): String {
@@ -197,7 +216,8 @@ class GoBroadCast : AppCompatActivity(), ConnectCheckerRtmp, View.OnClickListene
                     rtmpCamera1.stopStream()
                 }
             }
-            R.id.b_record -> {
+            R.id.b_record ->
+            {
                 Log.d("TAG_R", "b_start_stop: ")
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR2) {
                     if (!rtmpCamera1.isRecording) {
@@ -268,7 +288,8 @@ class GoBroadCast : AppCompatActivity(), ConnectCheckerRtmp, View.OnClickListene
                 getString(R.string.video_bitrate).toInt() * 1024,
                 false,
                 CameraHelper.getCameraOrientation(this))
-                && rtmpCamera1.prepareAudio(
+                &&
+                rtmpCamera1.prepareAudio(
                 getString(R.string.audio_bitrate).toInt() * 1024,
                 getString(R.string.sample_rate).toInt(),
                 true,
@@ -276,7 +297,47 @@ class GoBroadCast : AppCompatActivity(), ConnectCheckerRtmp, View.OnClickListene
                 false)
                 )
     }
+    override fun surfaceDestroyed(surfaceHolder: SurfaceHolder?) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR2 && rtmpCamera1.isRecording) {
+            rtmpCamera1.stopRecord()
+            b_record.setText(R.string.start_record)
+            Toast.makeText(this,
+                    "file " + currentDateAndTime + ".mp4 saved in " + folder.absolutePath,
+                    Toast.LENGTH_SHORT).show()
+            currentDateAndTime = ""
+        }
+        if (rtmpCamera1.isStreaming) {
+            rtmpCamera1.stopStream()
+            b_start_stop.setText(resources.getString(R.string.start_button))
+        }
+        rtmpCamera1.stopPreview()
+    }
+    override fun surfaceChanged(surfaceHolder: SurfaceHolder?, i: Int, i1: Int, i2: Int) {
+        rtmpCamera1.stopPreview()
+        rtmpCamera1.startPreview()
+        Log.i("GoBroadCast", "surfacedChanged()실행")
+        // optionally:
+        //rtmpCamera1.startPreview(CameraHelper.Facing.BACK);
+        //or
+//        rtmpCamera1.startPreview(CameraHelper.Facing.FRONT);
+    }
+    override fun surfaceCreated(holder: SurfaceHolder?) {
+        Log.i("GoBroadCast", "surfaceCreated()실행")
+    }
 
+    override fun onTouch(view: View?, motionEvent: MotionEvent): Boolean {
+        val action = motionEvent.action
+        if (motionEvent.pointerCount > 1) {
+            if (action == MotionEvent.ACTION_MOVE) {
+                rtmpCamera1.setZoom(motionEvent)
+            }
+        } else {
+            if (action == MotionEvent.ACTION_UP) {
+                // todo place to add autofocus functional.
+            }
+        }
+        return true
+    }
     private class ThreadStreamingStartStop : AsyncTask<String?, Void?, String>() {
 
         override fun onPreExecute() { }
@@ -287,6 +348,7 @@ class GoBroadCast : AppCompatActivity(), ConnectCheckerRtmp, View.OnClickListene
             val rtmp_title = params[2]
              val rtmp_url = params[3]
              val stream_key = params[4]
+             val thumbnail_url = params[5] + "/" + rtmp_title
 
             var postParameters = ""
 
@@ -295,7 +357,7 @@ class GoBroadCast : AppCompatActivity(), ConnectCheckerRtmp, View.OnClickListene
 
                 val streaming_url = rtmp_url + stream_key
                 Log.i("streaming_url" , streaming_url)
-                postParameters = "type=$type&rtmp_title=$rtmp_title&streaming_url=$streaming_url"
+                postParameters = "type=$type&rtmp_title=$rtmp_title&streaming_url=$streaming_url&thumbnail_url=$thumbnail_url"
             } else {
                 Log.i("스트리밍 방송 delete", " delete")
                 postParameters = "type=$type&rtmp_title=$rtmp_title"
@@ -341,6 +403,73 @@ class GoBroadCast : AppCompatActivity(), ConnectCheckerRtmp, View.OnClickListene
         }
         override fun onPostExecute(result: String) { //DB로부터 데이터를 JSON형태로 받아온다.
             Log.i("streaming_start_stop_result", result)
+//            try {
+//                val jsonArray = JSONArray(result)
+//                val total_json = jsonArray.length()
+//                Log.i("JSON갯수_pain_ankle", total_json.toString() + "")
+//                for (i in 1..total_json) {
+//                    val jsonObject = jsonArray.getJSONObject(i - 1)
+//                    val itemObject = ItemObject(jsonObject.getString("subject"), jsonObject.getString("contents_url"), jsonObject.getString("thumbnail_url"))
+//
+//                }
+//            } catch (e: JSONException) {
+//                e.printStackTrace()
+//            }
+            //            progressDialog.dismiss();
+        }
+    }
+
+    private class ThreadExtractThumbnail : AsyncTask<String?, Void?, String>() {
+
+        override fun onPreExecute() { }
+
+        override fun doInBackground(vararg params: String?): String {
+            val serverURL = params[0]
+            val rtmp_url = params[1] + params[2] //rtmp_url + stream_key
+            val rtmp_title = params[3]
+
+            var postParameters = "rtmp_url=$rtmp_url&rtmp_title=$rtmp_title"
+
+            Log.i("url : ", serverURL)
+            Log.i("parameter : ",postParameters)
+
+            return try {
+                val url = URL(serverURL)
+                val httpURLConnection = url.openConnection() as HttpURLConnection
+                httpURLConnection.readTimeout = 5000
+                httpURLConnection.connectTimeout = 5000
+                httpURLConnection.requestMethod = "POST"
+                httpURLConnection.connect()
+                val outputStream = httpURLConnection.outputStream
+                outputStream.write(postParameters.toByteArray(charset("UTF-8")))
+                outputStream.flush()
+                outputStream.close()
+                val responseStatusCode = httpURLConnection.responseCode
+                Log.d("ThreadExtractThumbnail", "POST response code - $responseStatusCode")
+                val inputStream: InputStream
+                inputStream = if (responseStatusCode == HttpURLConnection.HTTP_OK) {
+                    httpURLConnection.inputStream
+                } else {
+                    httpURLConnection.errorStream
+                }
+                val inputStreamReader = InputStreamReader(inputStream, "UTF-8")
+                val bufferedReader = BufferedReader(inputStreamReader)
+                val sb = StringBuilder()
+                var line: String? = null
+                while (bufferedReader.readLine().also { line = it } != null) {
+                    sb.append(line)
+                }
+                bufferedReader.close()
+                sb.toString()
+            } catch (e:Exception ) {
+
+                Log.d("ThreadExtractThumbnail", "InsertData: Error ", e);
+
+                return "Error: " + e.message
+            }
+        }
+        override fun onPostExecute(result: String) { //DB로부터 데이터를 JSON형태로 받아온다.
+            Log.i("extract_thumbnail_result", result)
 //            try {
 //                val jsonArray = JSONArray(result)
 //                val total_json = jsonArray.length()

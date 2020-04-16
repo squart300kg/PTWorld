@@ -1,7 +1,7 @@
 apply plugin: 'com.android.application'
 
 apply plugin: 'kotlin-android'
-apply plugin: 'kotlin-android-extensions' // 익스텐션 플러그인 적용
+apply plugin: 'kotlin-android-extensions' // Kotlin 익스텐션 플러그인
 android {
     compileSdkVersion 29
     buildToolsVersion "29.0.0"
@@ -13,29 +13,9 @@ android {
         versionName "1.0"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables.useSupportLibrary = true
-        externalNativeBuild {
-            cmake {
-//                arguments "-DANDROID_STL=c++_static", "-DANDROID_TOOLCHAIN=clang"
-//                arguments "-DANDROID_STL=gnustl_static"
-//                arguments "-DANDROID_TOOLCHAIN=clang -DANDROID_STL=c++_shared"
-                cppFlags ""
-            }
-        }
-        ndk {
-            abiFilters "armeabi-v7a"
-        }
-    }
-    externalNativeBuild {
-        cmake {
-            path "CMakeLists.txt"
-        }
+
     }
 
-    sourceSets {
-        main {
-            jniLibs.srcDirs = ['C:/Users/IBK/AndroidStudioProjects/PTWorld/app/src/main/jniLibs']
-        }
-    }
     buildTypes {
         release {
             minifyEnabled false
@@ -56,7 +36,12 @@ allprojects {
 
 dependencies {
 
-    //RTMP - Client모듈(PedroSG94의 rtmp-rtsp-stream-client-java)
+    //RTMP - 수신 모듈
+    //출처 : https://github.com/pedroSG94/vlc-example-streamplayer
+    implementation 'com.github.pedroSG94.vlc-example-streamplayer:pedrovlc:2.5.14v3'
+    implementation 'com.github.pedroSG94.vlc-example-streamplayer:libvlc:2.5.14v3'
+
+    //RTMP - 송신 모듈
     //출처 : https://github.com/pedroSG94/rtmp-rtsp-stream-client-java
     implementation 'com.github.pedroSG94.rtmp-rtsp-stream-client-java:rtplibrary:1.7.8'
 

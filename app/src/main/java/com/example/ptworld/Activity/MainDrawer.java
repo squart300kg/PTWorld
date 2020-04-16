@@ -1,10 +1,13 @@
 package com.example.ptworld.Activity;
 
+import android.Manifest;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.graphics.drawable.ShapeDrawable;
 import android.graphics.drawable.shapes.OvalShape;
 import android.os.AsyncTask;
@@ -20,14 +23,13 @@ import com.example.ptworld.Fragment.FragmentNotiHistory;
 import com.example.ptworld.Fragment.FragmentProfile;
 import com.example.ptworld.Fragment.FragmentSNS;
 import com.example.ptworld.R;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import android.util.Log;
 import android.view.View;
 
 import androidx.annotation.NonNull;
+import androidx.core.app.ActivityCompat;
 import androidx.core.view.GravityCompat;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 
@@ -36,7 +38,6 @@ import android.view.MenuItem;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.iid.FirebaseInstanceId;
-import com.google.firebase.iid.InstanceIdResult;
 import com.kakao.network.ErrorResult;
 import com.kakao.usermgmt.UserManagement;
 import com.kakao.usermgmt.callback.LogoutResponseCallback;
@@ -66,6 +67,12 @@ import java.net.URL;
 public class MainDrawer extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
+    private final String[] PERMISSIONS = {
+            Manifest.permission.RECORD_AUDIO,
+            Manifest.permission.CAMERA,
+            Manifest.permission.WRITE_EXTERNAL_STORAGE
+    };
+
     private FragmentManager fragmentManager = getSupportFragmentManager();
     private com.example.ptworld.Fragment.FragmentMain FragmentMain = new FragmentMain(MainDrawer.this);
     private com.example.ptworld.Fragment.FragmentSNS FragmentSNS = new FragmentSNS(MainDrawer.this);
@@ -74,11 +81,7 @@ public class MainDrawer extends AppCompatActivity
     private com.example.ptworld.Fragment.FragmentProfile FragmentProfile = new FragmentProfile(MainDrawer.this);
     private com.example.ptworld.Fragment.FragmentMyPage FragmentMyPage = new FragmentMyPage();
 
-    static
-    {
-        System.loadLibrary("native-lib");
-    }
-    public native  String stringFromJNI();
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -86,17 +89,17 @@ public class MainDrawer extends AppCompatActivity
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        Toast.makeText(this, stringFromJNI(), Toast.LENGTH_SHORT).show();
-
         DrawerLayout drawer = findViewById(R.id.drawer_drawer_layout);
         NavigationView navigationView = findViewById(R.id.nav_view);
-        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
-                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+
         drawer.addDrawerListener(toggle);
         toggle.syncState();
         navigationView.setNavigationItemSelectedListener(this);
 
-
+        if (!hasPermissions(this, PERMISSIONS)) {
+            ActivityCompat.requestPermissions(this, PERMISSIONS, 1);
+        }
 
         notification();
 
@@ -125,6 +128,17 @@ public class MainDrawer extends AppCompatActivity
         firebaseTokenInit();
 
 
+    }
+    private boolean hasPermissions(Context context, String... permissions) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && context != null && permissions != null) {
+            for (String permission : permissions) {
+                if (ActivityCompat.checkSelfPermission(context, permission)
+                        != PackageManager.PERMISSION_GRANTED) {
+                    return false;
+                }
+            }
+        }
+        return true;
     }
 
     private void firebaseTokenInit() {
@@ -360,9 +374,14 @@ public class MainDrawer extends AppCompatActivity
             startActivity(new Intent(this, UserListActivity.class));
             Toast.makeText(MainDrawer.this, "영상통화하기 클릭", Toast.LENGTH_SHORT).show();
         } else if (id == R.id.go_BroadCast) {
+
+
+
+
             startActivity(new Intent(MainDrawer.this, GoBroadCast.class));
             Toast.makeText(MainDrawer.this, "방송하기 클릭", Toast.LENGTH_SHORT).show();
         } else if (id == R.id.see_ReBroadCast) {
+//            startActivity(new Intent(MainDrawer.this, FFmepgTestActivity.class));
             Toast.makeText(MainDrawer.this, "방송다시보기 클릭", Toast.LENGTH_SHORT).show();
         } else if (id == R.id.see_BroadCast) {
             startActivity(new Intent(this, BroadCastListActivity.class));
